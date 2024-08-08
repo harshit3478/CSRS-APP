@@ -32,7 +32,7 @@ const CustomInput = ({
             />
           </View>
           {error && (
-            <Text style={{color: 'red', alignSelf: 'stretch'}}>{error.message || 'Error'}</Text>
+            <Text style={styles.error}>{error.message || 'Error'}</Text>
           )}
         </>
       )}
@@ -42,17 +42,24 @@ const CustomInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     width: '100%',
-
     borderColor: '#e8e8e8',
-    borderWidth: 1,
+    borderWidth: 3,
     borderRadius: 5,
-
     paddingHorizontal: 10,
     marginVertical: 5,
   },
-  input: {},
+  input: {
+    color: 'black',
+    // backgroundColor:'red',
+    placeholderTextColor: 'black',
+    padding: 10,
+  },
+  error:{
+    color: 'red',
+    alignSelf: 'stretch',
+  },
 });
 
 export default CustomInput;

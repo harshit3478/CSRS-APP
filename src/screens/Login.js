@@ -1,32 +1,38 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
-import { Link, useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+} from 'react-native';
 import {useForm} from 'react-hook-form';
+import {Link, useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-import CustomInput from '../components/CustomInput';
-import { Avatar } from '../components/Avatar';
+import colors from '../utils/colors';
 import CustomButton from '../components/CustomButton';
-import BackButton from '../components/BackButton';
+import CustomInput from '../components/CustomInput';
 import LogoButton from '../components/LogoButton';
 import BottomSection from '../components/BottomSection';
+import BackButton from '../components/BackButton';
 const {width, height} = Dimensions.get('window');
-import colors from '../utils/colors';
 
-const RegisterScreen = () => {
+
+const LoginScreen = () => {
   const {control, handleSubmit} = useForm();
   const navigation = useNavigation();
- 
+  console.log(width, height);
 
   return (
-   <SafeAreaView>
-    <View style={styles.container}>
-     <BackButton />
+    <>
+      <SafeAreaView>
+        <View style={styles.container}>
+          <BackButton />
 
           <View style={styles.motto}>
-            <Text style={styles.heading}>Hello!</Text>
-            <Text style={styles.subHeading}>Register to get started</Text>
+            <Text style={styles.heading}>Welcome back!</Text>
+            <Text style={styles.subHeading}>Login to get started</Text>
           </View>
 
           <View style={styles.form}>
@@ -34,32 +40,20 @@ const RegisterScreen = () => {
               control={control}
               name="email"
               rules={{required: 'Email is required'}}
-              placeholder="Institute Email"
-            />
-            <CustomInput
-              control={control}
-              name="rollno"
-              rules={{required: 'Roll No is required'}}
-              placeholder="Roll No"
+              placeholder="Enter your email"
             />
             <CustomInput
               control={control}
               name="password"
               rules={{required: 'Password is required'}}
-              placeholder="Password"
+              placeholder="Enter your password"
               secureTextEntry={true}
             />
-            <CustomInput
-              control={control}
-              name="cnfpassword"
-              rules={{required: 'Confirm Password is required'}}
-              placeholder="Confirm Password"
-              secureTextEntry={true}
-            />
-
-            
+            <Link style={styles.forgot} to="/forgot-password">
+              Forgot password?
+            </Link>
             <CustomButton
-              title="Register"
+              title="Login"
               onPress={handleSubmit(data => {
                 console.log(data);
                 navigation.navigate('Home');
@@ -69,7 +63,7 @@ const RegisterScreen = () => {
             <View style={styles.thirdParty}>
               <View style={styles.line}>
                 <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
-                <Text style={styles.loginWith}>Or Register with</Text>
+                <Text style={styles.loginWith}>Or Login with</Text>
                 <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
               </View>
               <View style={styles.buttons}>
@@ -89,17 +83,15 @@ const RegisterScreen = () => {
             </View>
           </View>
           <BottomSection
-            des="Already have an account?"
-            linkText="Login Now"
-            linkPath="/login"
+            des="Don't have an account?"
+            linkText="Register Now"
+            linkPath="/register"
           />
         </View>
-   </SafeAreaView>
+      </SafeAreaView>
+    </>
   );
 };
-
-export default RegisterScreen;
-
 const styles = StyleSheet.create({
   container: {
     height: height,
@@ -149,5 +141,6 @@ const styles = StyleSheet.create({
     color: colors.gray,
     textAlign: 'start',
   },
-  
-})
+});
+
+export default LoginScreen;

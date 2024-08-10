@@ -2,16 +2,22 @@
 
 
 import React from 'react';
-// import AppStack from './src/navigation/AppStack';
 import {  StyleSheet, View } from 'react-native';
-import AuthStack from './src/navigation/AuthStack';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 
-console.log(process.env.API_URL , 'API_URL' , process.env.TEST , 'TEST');
+library.add(fab, fas)
+
+import AuthStack from './src/navigation/AuthStack';
+// import AppStack from './src/navigation/AppStack';
+
+// console.log(process.env.API_URL , 'API_URL' , process.env.TEST , 'TEST');
 function App(): React.JSX.Element {
   return (
     <>
     <View style={styles.container}>
-      {/* <Text>Test</Text> */}
+
       {/* <AppStack /> */}
       <AuthStack />
     </View>

@@ -4,6 +4,7 @@ import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomButton from '../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
+import CustomInput from '../components/CustomInput';
 
 const AuthHomeScreen = () => {
   const navigation = useNavigation();
@@ -26,6 +27,10 @@ const AuthHomeScreen = () => {
             title="Register"
             onPress={() => navigation.navigate('register')}
             type="OUTLINED"
+          />
+          <CustomButton
+          title="OTP"
+          onPress={() => navigation.navigate('otp')}
           />
         </View>
         <View style={styles.motto}>

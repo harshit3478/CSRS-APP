@@ -1,13 +1,12 @@
 /* eslint-disable prettier/prettier */
 
-
 import React from 'react';
-import {  StyleSheet, View } from 'react-native';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fab } from '@fortawesome/free-brands-svg-icons'
-import { fas } from '@fortawesome/free-solid-svg-icons'
+import {StyleSheet, View} from 'react-native';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {fab} from '@fortawesome/free-brands-svg-icons';
+import {fas} from '@fortawesome/free-solid-svg-icons';
 
-library.add(fab, fas)
+library.add(fab, fas);
 
 import AuthStack from './src/navigation/AuthStack';
 // import AppStack from './src/navigation/AppStack';
@@ -16,13 +15,12 @@ import AuthStack from './src/navigation/AuthStack';
 function App(): React.JSX.Element {
   return (
     <>
-    <View style={styles.container}>
-
-      {/* <AppStack /> */}
-      <AuthStack />
-    </View>
+      <View style={styles.container}>
+        {/* <AppStack /> */}
+        <AuthStack />
+      </View>
     </>
-  )
+  );
 }
 const styles = StyleSheet.create({
   container: {
@@ -30,5 +28,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
   },
-})
+});
 export default App;

@@ -8,7 +8,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import OTPTextView from 'react-native-otp-textinput';
 import CustomButton from '../components/CustomButton';
 import BottomSection from '../components/BottomSection';
-import { useNavigation } from '@react-navigation/native';
 
 export default function OtpScreen({navigation}) {
   let otpInput = useRef(null);
@@ -16,8 +15,8 @@ export default function OtpScreen({navigation}) {
   const handleChange = (code) => {
     setOtp(code);
   }
+  
   // const navigation = useNavigation();
-
  
   return (
     <SafeAreaView style={{flex:1}}>

@@ -49,7 +49,7 @@ const LoginScreen = () => {
               placeholder="Enter your password"
               secureTextEntry={true}
             />
-            <Link style={styles.forgot} to="/forgot-password">
+            <Link style={styles.forgot} to="/forgotPassword">
               Forgot password?
             </Link>
             <CustomButton

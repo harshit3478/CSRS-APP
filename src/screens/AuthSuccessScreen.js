@@ -9,7 +9,7 @@ export default function AuthSuccessScreen({route, navigation}) {
     console.log('rote params' , route.params);
   return (
     <View className="flex-1 ">
-     <AuthSuccess title={title} subText={'You have been registered successfully'} btnText={'Get Started'} onPress={()=>{navigation.navigate(path)}} />
+     <AuthSuccess title={title} subText={subText} btnText={btnText} onPress={()=>{navigation.navigate(path)}} />
     </View>
   );
 }

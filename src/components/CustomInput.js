@@ -3,6 +3,8 @@ import React from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {Controller} from 'react-hook-form';
 
+import colors from '../utils/colors';
+
 const CustomInput = ({
   control,
   name,
@@ -10,6 +12,7 @@ const CustomInput = ({
   placeholder,
   secureTextEntry,
 }) => {
+  const [isFocused, setIsFocused] = React.useState(false);
   return (
     <Controller
       control={control}
@@ -17,20 +20,16 @@ const CustomInput = ({
       rules={rules}
       render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
         <>
-          <View
-            style={[
-              styles.container,
-              {borderColor: error ? 'red' : '#e8e8e8'},
-            ]}>
             <TextInput
               value={value}
               onChangeText={onChange}
-              onBlur={onBlur}
+              onBlur={() =>{onBlur(); setIsFocused(false)}}
+              onFocus={() => setIsFocused(true)}
               placeholder={placeholder}
-              style={styles.input}
+              style={[styles.input , isFocused && styles.input.onFocused]}
               secureTextEntry={secureTextEntry}
+              placeho
             />
-          </View>
           {error && (
             <Text style={styles.error}>{error.message || 'Error'}</Text>
           )}
@@ -41,22 +40,23 @@ const CustomInput = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // backgroundColor: 'white',
-    width: '100%',
-    borderColor: '#e8e8e8',
-    borderWidth: 3,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginVertical: 5,
-  },
+ 
   input: {
     color: 'black',
-    // backgroundColor:'red',
-    placeholderTextColor: 'black',
-    padding: 10,
+    borderRadius: 8,
+    marginVertical: 9,
+    padding: 15,
+    backgroundColor: colors.grayBackground,
+    fontFamily: 'Urbainst',
+    onFocused: {
+      borderColor: colors.primary,
+    borderWidth: 1.3,
+      // backgroundColor: 'red',
+    },
   },
+
   error:{
+    marginVertical: 5,
     color: 'red',
     alignSelf: 'stretch',
   },

@@ -7,16 +7,16 @@ import {fas} from '@fortawesome/free-solid-svg-icons';
 
 library.add(fab, fas);
 
-import AuthStack from './src/navigation/AuthStack';
-// import AppStack from './src/navigation/AppStack';
+// import AuthStack from './src/navigation/AuthStack';
+import AppStack from './src/navigation/AppStack';
 
 // console.log(process.env.API_URL , 'API_URL' , process.env.TEST , 'TEST');
 function App(): React.JSX.Element {
   return (
     <>
       <View style={styles.container}>
-        {/* <AppStack /> */}
-        <AuthStack />
+        <AppStack />
+        {/* <AuthStack /> */}
       </View>
     </>
   );

@@ -8,24 +8,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import OTPTextView from 'react-native-otp-textinput';
 import CustomButton from '../components/CustomButton';
 import BottomSection from '../components/BottomSection';
-import { useNavigation } from '@react-navigation/native';
 
 export default function OtpScreen({navigation}) {
   let otpInput = useRef(null);
   const [otp, setOtp] = useState('');
   const handleChange = (code) => {
     setOtp(code);
-  }
+  };
+
   // const navigation = useNavigation();
 
- 
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={styles.safeArea}>
 
 
     <View style={styles.container}>
       <BackButton />
-      
+
       <View style={styles.motto}>
             <Text style={styles.heading}>Verification Code</Text>
             <Text style={styles.subHeading}>We have sent you a verification code to your email address</Text>
@@ -33,7 +32,7 @@ export default function OtpScreen({navigation}) {
     <OTPTextView refs={otpInput}  tintColor={colors.primary} offTintColor={colors.grayBackground} inputCount={4} textInputStyle={styles.digitField} containerStyle={styles.inputContainer} autoFocus defaultValue="" handleTextChange={handleChange} />
 
     <CustomButton title={'Verify'} onPress={() => navigation.navigate('authSuccess', {title : 'Registration Successful' , subText:'You have been registered successfully' , btnText : 'Get Started' , path: 'login'})} />
-      
+
     <BottomSection des={"Didn't receive the code?"} linkPath={'Resend'} linkText={'Resend'} />
     </View>
     </SafeAreaView>
@@ -80,5 +79,8 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
 
-  }
-})
+  },
+  safeArea: {
+    flex: 1,
+  },
+});

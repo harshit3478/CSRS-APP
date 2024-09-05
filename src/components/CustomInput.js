@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {Text, TextInput, StyleSheet} from 'react-native';
 import {Controller} from 'react-hook-form';
 
 import colors from '../utils/colors';
@@ -20,16 +20,19 @@ const CustomInput = ({
       rules={rules}
       render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
         <>
-            <TextInput
-              value={value}
-              onChangeText={onChange}
-              onBlur={() =>{onBlur(); setIsFocused(false)}}
-              onFocus={() => setIsFocused(true)}
-              placeholder={placeholder}
-              style={[styles.input , isFocused && styles.input.onFocused]}
-              secureTextEntry={secureTextEntry}
-              placeho
-            />
+          <TextInput
+            value={value}
+            onChangeText={onChange}
+            onBlur={() => {
+              onBlur();
+              setIsFocused(false);
+            }}
+            onFocus={() => setIsFocused(true)}
+            placeholder={placeholder}
+            style={[styles.input, isFocused && styles.input.onFocused]}
+            secureTextEntry={secureTextEntry}
+            placeholderTextColor={colors.gray}
+          />
           {error && (
             <Text style={styles.error}>{error.message || 'Error'}</Text>
           )}
@@ -40,7 +43,6 @@ const CustomInput = ({
 };
 
 const styles = StyleSheet.create({
- 
   input: {
     color: 'black',
     borderRadius: 8,
@@ -50,13 +52,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Urbainst',
     onFocused: {
       borderColor: colors.primary,
-    borderWidth: 1.3,
-      // backgroundColor: 'red',
+      borderWidth: 1.3,
     },
   },
 
-  error:{
-    marginVertical: 5,
+  error: {
+    marginTop: -8,
+    marginBottom: 0,
     color: 'red',
     alignSelf: 'stretch',
   },

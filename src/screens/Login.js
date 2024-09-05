@@ -5,10 +5,12 @@ import {
   Text,
   View,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import {useForm} from 'react-hook-form';
 import {Link, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+
 
 import colors from '../utils/colors';
 import CustomButton from '../components/CustomButton';
@@ -27,6 +29,7 @@ const LoginScreen = () => {
   return (
     <>
       <SafeAreaView>
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
           <BackButton />
 
@@ -88,6 +91,7 @@ const LoginScreen = () => {
             linkPath="/register"
           />
         </View>
+          </ScrollView>
       </SafeAreaView>
     </>
   );
@@ -98,6 +102,11 @@ const styles = StyleSheet.create({
     width: width,
     alignItems: 'center',
     padding: 20,
+    position: 'relative',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    // justifyContent: 'center',
   },
   form: {
     width: '100%',
@@ -110,6 +119,13 @@ const styles = StyleSheet.create({
   },
   forgot: {
     alignSelf: 'flex-end',
+    hover: {
+      color: 'red',
+    },
+    cursor: 'pointer',
+    color: 'black',
+    borderBottomColor: colors.secondary,
+    borderBottomWidth: 1,
     marginTop: 5,
     marginBottom: 15,
   },

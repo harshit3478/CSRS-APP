@@ -1,90 +1,90 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
-import { Link, useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {View, Text, StyleSheet, Dimensions, ScrollView} from 'react-native';
+import {Link, useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {useForm} from 'react-hook-form';
 
 import CustomInput from '../components/CustomInput';
-import { Avatar } from '../components/Avatar';
+import {Avatar} from '../components/Avatar';
 import CustomButton from '../components/CustomButton';
 import BackButton from '../components/BackButton';
 import LogoButton from '../components/LogoButton';
 import BottomSection from '../components/BottomSection';
-const {width, height} = Dimensions.get('window');
 import colors from '../utils/colors';
 
 const RegisterScreen = () => {
   const {control, handleSubmit} = useForm();
   const navigation = useNavigation();
- 
 
   return (
-   <SafeAreaView>
-    <View style={styles.container}>
-     <BackButton />
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          <View style={styles.innerContainer}>
+            <BackButton />
 
-          <View style={styles.motto}>
-            <Text style={styles.heading}>Hello!</Text>
-            <Text style={styles.subHeading}>Register to get started</Text>
-          </View>
+            <View style={styles.motto}>
+              <Text style={styles.heading}>Hello!</Text>
+              <Text style={styles.subHeading}>Register to get started</Text>
+            </View>
 
-          <View style={styles.form}>
-            <CustomInput
-              control={control}
-              name="email"
-              rules={{required: 'Email is required'}}
-              placeholder="Institute Email"
-            />
-            <CustomInput
-              control={control}
-              name="rollno"
-              rules={{required: 'Roll No is required'}}
-              placeholder="Roll No"
-            />
-            <CustomInput
-              control={control}
-              name="password"
-              rules={{required: 'Password is required'}}
-              placeholder="Password"
-              secureTextEntry={true}
-            />
-            <CustomInput
-              control={control}
-              name="cnfpassword"
-              rules={{required: 'Confirm Password is required'}}
-              placeholder="Confirm Password"
-              secureTextEntry={true}
-            />
+            <View style={styles.form}>
+              <CustomInput
+                control={control}
+                name="email"
+                rules={{required: 'Email is required'}}
+                placeholder="Institute Email"
+              />
+              <CustomInput
+                control={control}
+                name="rollno"
+                rules={{required: 'Roll No is required'}}
+                placeholder="Roll No"
+              />
+              <CustomInput
+                control={control}
+                name="password"
+                rules={{required: 'Password is required'}}
+                placeholder="Password"
+                secureTextEntry={true}
+              />
+              <CustomInput
+                control={control}
+                name="cnfpassword"
+                rules={{required: 'Confirm Password is required'}}
+                placeholder="Confirm Password"
+                secureTextEntry={true}
+              />
 
-            
-            <CustomButton
-              title="Register"
-              onPress={handleSubmit(data => {
-                console.log(data);
-                navigation.navigate('Home');
-              })}
-            />
+              <CustomButton
+                title="Register"
+                onPress={handleSubmit(data => {
+                  console.log(data);
+                  navigation.navigate('Home');
+                })}
+              />
 
-            <View style={styles.thirdParty}>
-              <View style={styles.line}>
-                <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
-                <Text style={styles.loginWith}>Or Register with</Text>
-                <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
-              </View>
-              <View style={styles.buttons}>
-                <LogoButton
-                  source={require('../../assets/facebook_icon.png')}
-                  onPress={() => {}}
-                />
-                <LogoButton
-                  source={require('../../assets/google_icon.png')}
-                  onPress={() => {}}
-                />
-                <LogoButton
-                  source={require('../../assets/apple_icon.png')}
-                  onPress={() => {}}
-                />
+              <View style={styles.thirdParty}>
+                <View style={styles.line}>
+                  <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
+                  <Text style={styles.loginWith}>Or Register with</Text>
+                  <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
+                </View>
+                <View style={styles.buttons}>
+                  <LogoButton
+                    source={require('../../assets/facebook_icon.png')}
+                    onPress={() => {}}
+                  />
+                  <LogoButton
+                    source={require('../../assets/google_icon.png')}
+                    onPress={() => {}}
+                  />
+                  <LogoButton
+                    source={require('../../assets/apple_icon.png')}
+                    onPress={() => {}}
+                  />
+                </View>
               </View>
             </View>
           </View>
@@ -94,21 +94,31 @@ const RegisterScreen = () => {
             linkPath="/login"
           />
         </View>
-   </SafeAreaView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
-    height: height,
-    width: width,
-    alignItems: 'center',
+    flex: 1,
+    position: 'relative',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  innerContainer: {
+    flex: 1,
     padding: 20,
   },
   form: {
-    width: '100%',
     marginVertical: 20,
   },
   motto: {
@@ -137,6 +147,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: 'space-between',
     marginVertical: 10,
+    marginBottom: 50,
   },
   heading: {
     fontSize: 25,
@@ -149,5 +160,4 @@ const styles = StyleSheet.create({
     color: colors.gray,
     textAlign: 'start',
   },
-  
-})
+});

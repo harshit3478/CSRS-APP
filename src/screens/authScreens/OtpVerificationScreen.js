@@ -3,11 +3,11 @@ import { Text, Button, View, TextInput, StyleSheet } from 'react-native';
 import React , { useRef, useState } from 'react';
 
 import colors from '../utils/colors';
-import BackButton from '../components/BackButton';
+import BackButton from '../../components/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import OTPTextView from 'react-native-otp-textinput';
-import CustomButton from '../components/CustomButton';
-import BottomSection from '../components/BottomSection';
+import CustomButton from '../../components/CustomButton';
+import BottomSection from '../../components/BottomSection';
 
 export default function OtpScreen({navigation}) {
   let otpInput = useRef(null);

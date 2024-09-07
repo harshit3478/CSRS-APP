@@ -2,9 +2,9 @@
 import React from 'react';
 
 import {View, Text, SafeAreaView} from 'react-native';
-import BackButton from '../components/BackButton';
-import CustomInput from '../components/CustomInput';
-import CustomButton from '../components/CustomButton';
+import BackButton from '../../components/BackButton';
+import CustomInput from '../../components/CustomInput';
+import CustomButton from '../../components/CustomButton';
 import { useForm } from 'react-hook-form';
 
 export default function ResetPasswordScreen({navigation}) {

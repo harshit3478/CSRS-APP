@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View , Text} from 'react-native';
-import AuthSuccess from '../components/AuthSuccess';
+import AuthSuccess from '../../components/AuthSuccess';
 
 
 export default function AuthSuccessScreen({route, navigation}) {

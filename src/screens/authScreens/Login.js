@@ -13,11 +13,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 
 import colors from '../utils/colors';
-import CustomButton from '../components/CustomButton';
-import CustomInput from '../components/CustomInput';
-import LogoButton from '../components/LogoButton';
-import BottomSection from '../components/BottomSection';
-import BackButton from '../components/BackButton';
+import CustomButton from '../../components/CustomButton';
+import CustomInput from '../../components/CustomInput';
+import LogoButton from '../../components/LogoButton';
+import BottomSection from '../../components/BottomSection';
+import BackButton from '../../components/BackButton';
 const {width, height} = Dimensions.get('window');
 
 

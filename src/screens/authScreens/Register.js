@@ -5,12 +5,12 @@ import {Link, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useForm} from 'react-hook-form';
 
-import CustomInput from '../components/CustomInput';
-import {Avatar} from '../components/Avatar';
-import CustomButton from '../components/CustomButton';
-import BackButton from '../components/BackButton';
-import LogoButton from '../components/LogoButton';
-import BottomSection from '../components/BottomSection';
+import CustomInput from '../../components/CustomInput';
+import {Avatar} from '../../components/Avatar';
+import CustomButton from '../../components/CustomButton';
+import BackButton from '../../components/BackButton';
+import LogoButton from '../../components/LogoButton';
+import BottomSection from '../../components/BottomSection';
 import colors from '../utils/colors';
 
 const RegisterScreen = () => {

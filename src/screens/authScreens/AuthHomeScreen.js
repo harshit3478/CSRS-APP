@@ -2,9 +2,8 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
-import CustomInput from '../components/CustomInput';
 
 const AuthHomeScreen = () => {
   const navigation = useNavigation();

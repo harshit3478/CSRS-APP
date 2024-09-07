@@ -4,9 +4,9 @@ import {View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useForm} from 'react-hook-form';
 
-import CustomInput from '../components/CustomInput';
-import CustomButton from '../components/CustomButton';
-import BackButton from '../components/BackButton';
+import CustomInput from '../../components/CustomInput';
+import CustomButton from '../../components/CustomButton';
+import BackButton from '../../components/BackButton';
 
 export default function ForgotPasswordScreen({navigation}) {
   const {control, handleSubmit} = useForm();

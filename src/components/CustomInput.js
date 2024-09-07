@@ -32,6 +32,7 @@ const CustomInput = ({
             style={[styles.input, isFocused && styles.input.onFocused]}
             secureTextEntry={secureTextEntry}
             placeholderTextColor={colors.gray}
+            // keyboardType='numeric'
           />
           {error && (
             <Text style={styles.error}>{error.message || 'Error'}</Text>

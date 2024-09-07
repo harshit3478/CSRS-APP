@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   Animated,
+  StatusBar,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -13,7 +14,9 @@ import {useNavigation} from '@react-navigation/native';
 // import { MenuIcon, MapPinIcon } from 'react-native-heroicons/outline';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import SosBg from '../../assets/sos_bg.svg';
+// import SosBg from '../../assets/sos_bg.svg';
+import HeaderSection from '../../components/HeaderSection';
+import SOSButton from '../../components/SOSButton';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -31,21 +34,23 @@ export default function HomeScreen() {
         setTimer(prevTimer => prevTimer - 1);
       }, 1000);
     } else if (timer === 0) {
-      setColor('bg-red-400'); // Change shadow to red when timer hits 0
       clearInterval(countdown);
+      
+      navigation.navigate('SOSScreen');
     }
 
     return () => clearInterval(countdown);
   }, [isPressed, timer]);
 
   const handlePressIn = () => {
+    if (!isPressed) {
+      animatePress();}
     setIsPressed(true);
   };
 
   const handlePressOut = () => {
     setIsPressed(false);
     setTimer(5); // Reset timer
-    setColor('bg-blue-400'); // Reset color
   };
 
   const animatePress = () => {
@@ -57,9 +62,8 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView>
-      <View className="bg-[#4E32FF] rounded-b-2xl p-4 shadow-md">
-        <View className="flex-row justify-between items-center">
+    <SafeAreaView >
+      <HeaderSection>
           <View className="flex-row items-center space-x-2">
             {/* <MapPinIcon size={30} color="white" /> */}
             <Icon name="location-outline" size={30} color="white" />
@@ -75,8 +79,11 @@ export default function HomeScreen() {
           <View>
             <Icon name="menu-outline" size={30} color="white" />
           </View>
+      </HeaderSection>
+      {/* <View className="bg-[#4E32FF] rounded-b-2xl p-4 shadow-md">
+        <View className="flex-row justify-between items-center">
         </View>
-      </View>
+      </View> */}
       <View className="flex-col py-16 px-5 space-y-2">
         <Text className="text-2xl text-center text-black font-urbanist font-medium">
           Are you in an Emergency?
@@ -86,15 +93,28 @@ export default function HomeScreen() {
           nearby rescue services will be notified.
         </Text>
       </View>
-      <View className="flex items-center justify-center relative text-center">
+      {/* <View className="flex items-center justify-center relative text-center">
         <SosBg className="w-40 h-40"/>
         <View className="flex items-center justify-center w-full absolute text-center">
           <Text className="text-white text-5xl font-urbanist">
             SOS
           </Text>
         </View>
-      </View>
+      </View> */}
+      <SOSButton onPressIn={handlePressIn} onPressOut={handlePressOut} isTapped={isPressed}>
+        <View className="flex w-full  items-center justify-center  text-center bg-blue-20">
+          {isPressed ?
+           <Text className="text-white text-9xl font-urbanist p-2">{timer}</Text> 
+           : 
+           <>
+           <Text className="text-white text-7xl font-urbanist">SOS</Text>
+          <Text className="text-white text-2xl font-urbanist">Hold for 5s</Text>
+           </>
+           }
+         
+        </View>
+      </SOSButton>
     </SafeAreaView>
   );
 }
-// const styles = StyleSheet.create({});
+

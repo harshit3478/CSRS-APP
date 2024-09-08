@@ -1,15 +1,22 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Text, StyleSheet, Pressable} from 'react-native';
+import {Text, StyleSheet, Pressable, ActivityIndicator} from 'react-native';
 
 import colors from '../utils/colors';
 
-const CustomButton = ({onPress, title, type = 'PRIMARY'}) => {
+const CustomButton = ({onPress, title, type = 'PRIMARY', loading = false}) => {
   return (
     <Pressable
       onPress={onPress}
       style={[styles.container, styles[`container_${type}`]]}>
-      <Text style={[styles.text, styles[`text_${type}`]]}>{title}</Text>
+      {loading ? (
+        <ActivityIndicator
+          color={type === 'PRIMARY' ? 'white' : colors.primary}
+          size={30}
+        />
+      ) : (
+        <Text style={[styles.text, styles[`text_${type}`]]}>{title}</Text>
+      )}
     </Pressable>
   );
 };

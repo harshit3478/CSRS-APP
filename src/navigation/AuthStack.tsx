@@ -9,6 +9,7 @@ import OtpScreen from '../screens/authScreens/OtpVerificationScreen';
 import AuthSuccessScreen from '../screens/authScreens/AuthSuccessScreen';
 import ForgotPasswordScreen from '../screens/authScreens/ForgotPasswordScreen';
 import ResetPasswordScreen from '../screens/authScreens/ResetPasswordScreen';
+import RegisterWithGoogleScreen from '../screens/authScreens/RegisterWithGoogle';
 
 
 const Stack = createNativeStackNavigator();
@@ -18,12 +19,13 @@ const AuthStack = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="authHome" component={AuthHomeScreen} />
-        <Stack.Screen name="register" component={RegisterScreen} />
         <Stack.Screen name="login" component={LoginScreen} />
+        <Stack.Screen name="register" component={RegisterScreen} />
         <Stack.Screen name="otp" component={OtpScreen} />
         <Stack.Screen name="authSuccess" component={AuthSuccessScreen} />
         <Stack.Screen name="forgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="resetPassword" component={ResetPasswordScreen} />
+        <Stack.Screen name="registerWithGoogle" component={RegisterWithGoogleScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

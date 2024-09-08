@@ -18,78 +18,13 @@ import LogoButton from '../../components/LogoButton';
 import BottomSection from '../../components/BottomSection';
 import colors from '../../utils/colors';
 
-const RegisterScreen = () => {
-  const {control, handleSubmit, getValues} = useForm();
+const RegisterWithGoogleScreen = ({route}) => {
+  const {control, handleSubmit ,register, getValues } = useForm();
   const navigation = useNavigation();
-  const [loading , setLoading] = React.useState(false)
-  GoogleSignin.configure({
-    androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
-    webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
-    offlineAccess: false, // If you need serverAuthCode for server-side token exchange
-    scopes: ['profile', 'email'], // Request access to profile and email
-  });
-  async function googleSignUp(e) {
-    e.preventDefault();
-    console.log('Google Sign Up');
-    try {
-      setLoading(true)
-     await GoogleSignin.hasPlayServices();
-     await GoogleSignin.signOut()
-      const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo)
-      const userData = userInfo.data.user
-      console.log(userData)
-      if (userData.email.includes('@kgpian.iitkgp.ac.in')) {
-        navigation.navigate('registerWithGoogle', {email: userData.email, name: userData.name});
-      } else {
-        console.log('Email is not valid');
-        await GoogleSignin.signOut();
-        console.log('Signed out');
-        ToastAndroid.show('Please sign in with your IIT Kharagpur email', ToastAndroid.LONG);
-      }
-    }catch(err){
-      console.log("ERROR IS " , err)
-    
-    }finally{
-      setLoading(false)
-    }
-  }
-
-  async function handleSignUp(data) {
-    try{
-      setLoading(true)
-      const {name, email, phone, rollno, password} = data;
-      console.log(name, email, phone, rollno, password);
-      // API call to register user
-      // If successful, navigate to Home screen
-      console.log(process.env.API_URL);
-      const response = await fetch(process.env.API_URL + "/auth/v2/signup", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        phone: phone,
-        rollNo: rollno,
-        password: password,
-        deviceToken: '1234567890',
-      }),
-    });
-    const result = await response.json();
-    console.log(result);
-    if (response.ok) {
-      console.log('User registered successfully');
-      // navigation.navigate('Home');
-    }
-  }catch(err){
-    console.log("ERROR IS " , err )
-  }finally{
-    setLoading(false)
-  }
-
-  }
+  const {email , name} = route.params;
+  // get the value of email from control and set it to the email field
+   
+  
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -98,8 +33,8 @@ const RegisterScreen = () => {
             <BackButton />
 
             <View style={styles.motto}>
-              <Text style={styles.heading}>Hello!</Text>
-              <Text style={styles.subHeading}>Register to get started</Text>
+              <Text style={styles.heading}>Hello! {name}</Text>
+              <Text style={styles.subHeading}>Fill in the details to get Started!</Text>
             </View>
 
             <View style={styles.form}>
@@ -107,30 +42,16 @@ const RegisterScreen = () => {
                 control={control}
                 name="name"
                 placeholder="Full Name"
-                rules={{
-                  required: 'Name is required',
-                  minLength: {
-                    value: 2,
-                    message: 'Name must be at least 2 characters long',
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z\s]+$/,
-                    message: 'Name must contain only letters and spaces',
-                  },
-                }}
+                
+                defaultValue={name}
               />
               <CustomInput
                 control={control}
                 name="email"
                 placeholder="Institute Email"
                 keyboardType="email-address"
-                rules={{
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@kgpian\.iitkgp\.ac\.in$/,
-                    message: 'Please enter a valid institute email',
-                  },
-                }}
+                disabled={true}
+                defaultValue={email}
               />
               <CustomInput
                 control={control}
@@ -188,8 +109,10 @@ const RegisterScreen = () => {
 
               <CustomButton
                 title="Register"
-                onPress={handleSubmit(handleSignUp)}
-                loading={loading}
+                onPress={handleSubmit(data => {
+                  console.log(data);
+                  navigation.navigate('Home');
+                })}
               />
 
               <View style={styles.thirdParty}>
@@ -205,7 +128,7 @@ const RegisterScreen = () => {
                   />
                   <LogoButton
                     source={require('../../../assets/google_icon.png')}
-                    onPress={(e) => googleSignUp(e)}
+                    onPress={(e) => {}}
                   />
                   <LogoButton
                     source={require('../../../assets/apple_icon.png')}
@@ -215,18 +138,13 @@ const RegisterScreen = () => {
               </View>
             </View>
           </View>
-          <BottomSection
-            des="Already have an account?"
-            linkText="Login Now"
-            linkPath="/login"
-          />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default RegisterScreen;
+export default RegisterWithGoogleScreen;
 
 const styles = StyleSheet.create({
   safeArea: {

@@ -2,7 +2,7 @@
 import { Text, Button, View, TextInput, StyleSheet } from 'react-native';
 import React , { useRef, useState } from 'react';
 
-import colors from '../utils/colors';
+import colors from '../../utils/colors';
 import BackButton from '../../components/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import OTPTextView from 'react-native-otp-textinput';

@@ -22,7 +22,9 @@ export default function ProfileScreen() {
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
         <HeaderSection>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Pressable onPress={() => navigation.goBack()}>
             <Icon name="chevron-left" size={20} color="white" />
+            </Pressable>
             <Text
               style={{
                 marginLeft: 10,
@@ -37,7 +39,7 @@ export default function ProfileScreen() {
           </View>
           <TouchableOpacity
             style={{flexDirection: 'row', alignItems: 'center'}}
-            onPress={() => navigation.navigate('AddContact')}>
+            onPress={() => navigation.navigate('EditProfile')}>
             <Icon name="pencil" size={20} color="white" />
             <Text
               style={{color: 'white', fontSize: 16, marginLeft: 5}}
@@ -60,7 +62,7 @@ export default function ProfileScreen() {
                 onChange={handleImageChange}
               />
             </View>
-            <Text className="text-3xl text-black font-urbanist-extrabold">
+            <Text className="text-3xl text-urbanist-extrabold text-black ">
               Shreya Singh
             </Text>
             <Text
@@ -71,7 +73,7 @@ export default function ProfileScreen() {
           </View>
           <View className="details-section p-5">
             <View className="flex-row justify-between items-center my-3">
-              <Text className="text-lg font-urbanist-medium w-1/2">Email</Text>
+              <Text className="text-lg text-urbanist-black-italic  w-1/2">Email</Text>
               <Text className="text-lg font-urbanist-medium text-black w-1/2 text-left">shreya@gmail.com</Text>
             </View>
             <View className="flex-row justify-between items-center my-3">

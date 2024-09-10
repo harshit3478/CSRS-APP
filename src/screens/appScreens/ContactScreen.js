@@ -6,6 +6,7 @@ import colors from '../../utils/colors';
 import HeaderSection from '../../components/HeaderSection';
 import Contact from '../../components/Contact';
 import { useNavigation } from '@react-navigation/native';
+import BackButton from '../../components/BackButton';
 
 const ContactScreen = () => {
   const navigator = useNavigation()
@@ -28,7 +29,7 @@ const ContactScreen = () => {
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
       <HeaderSection>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Icon name="chevron-left" size={20} color="white" />
+          <BackButton/>
           <Text style={{marginLeft: 10, color: 'white', fontSize: 18, fontWeight: 'bold' , fontFamily:'Urbanist'}} className="font-urbanist-extrabold">Contacts</Text>
         </View>
         <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={()=> navigator.navigate("AddContact")}>

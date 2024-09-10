@@ -1,30 +1,67 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions, ScrollView, ToastAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  ToastAndroid,
+} from 'react-native';
 import {Link, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useForm} from 'react-hook-form';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
 
-
+import { useAuth } from '../../context/authenticationContext';
 import CustomInput from '../../components/CustomInput';
-import {Avatar} from '../../components/Avatar';
 import CustomButton from '../../components/CustomButton';
 import BackButton from '../../components/BackButton';
-import LogoButton from '../../components/LogoButton';
-import BottomSection from '../../components/BottomSection';
 import colors from '../../utils/colors';
 
 const RegisterWithGoogleScreen = ({route}) => {
-  const {control, handleSubmit ,register, getValues } = useForm();
+  const {control, handleSubmit, register, getValues} = useForm();
   const navigation = useNavigation();
-  const {email , name} = route.params;
+  const {email, name} = route.params;
+  const [loading, setLoading] = React.useState(false);
+  const {login} = useAuth();
+  async function handleRegister(data) {
+    console.log(data);
+    const {name, email, phone, rollno, password} = data;
+    try {
+      setLoading(true);
+      console.log('Registering');
+      console.log(name, email, phone, rollno, password);
+      const response = await fetch(process.env.API_URL + '/auth/v2/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          rollNo:rollno,
+          password,
+          deviceToken: '1234',
+        }),
+      });
+      const res = await response.json();
+      console.log(res);
+      if (res.isSuccess) {
+        ToastAndroid.show('Registration Successful', ToastAndroid.LONG);
+        login(res.data);
+        navigation.navigate("App" , {screen: "TabNavigator", params: {screen: "Profile"}})
+      } else {
+        ToastAndroid.show('Registration Failed', ToastAndroid.LONG);
+      }
+    } catch (err) {
+      console.log('signup error is:', err);
+    } finally {
+      setLoading(false);
+    }
+  }
   // get the value of email from control and set it to the email field
-   
-  
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -34,7 +71,9 @@ const RegisterWithGoogleScreen = ({route}) => {
 
             <View style={styles.motto}>
               <Text style={styles.heading}>Hello! {name}</Text>
-              <Text style={styles.subHeading}>Fill in the details to get Started!</Text>
+              <Text style={styles.subHeading}>
+                Fill in the details to get Started!
+              </Text>
             </View>
 
             <View style={styles.form}>
@@ -42,7 +81,6 @@ const RegisterWithGoogleScreen = ({route}) => {
                 control={control}
                 name="name"
                 placeholder="Full Name"
-                
                 defaultValue={name}
               />
               <CustomInput
@@ -74,7 +112,8 @@ const RegisterWithGoogleScreen = ({route}) => {
                   required: 'Roll No is required',
                   pattern: {
                     value: /^[0-9]{2}[A-Z]{2}[0-9]{5}$/,
-                    message: 'Roll No must be in the format YYXX00000 (e.g., 22CE10029)',
+                    message:
+                      'Roll No must be in the format YYXX00000 (e.g., 22CE10029)',
                   },
                 }}
               />
@@ -91,7 +130,8 @@ const RegisterWithGoogleScreen = ({route}) => {
                   },
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/,
-                    message: 'Password must be strong (include letters, numbers, and special characters)',
+                    message:
+                      'Password must be strong (include letters, numbers, and special characters)',
                   },
                 }}
               />
@@ -109,33 +149,9 @@ const RegisterWithGoogleScreen = ({route}) => {
 
               <CustomButton
                 title="Register"
-                onPress={handleSubmit(data => {
-                  console.log(data);
-                  navigation.navigate('Home');
-                })}
+                onPress={handleSubmit(handleRegister)}
+                loading={loading}
               />
-
-              <View style={styles.thirdParty}>
-                <View style={styles.line}>
-                  <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
-                  <Text style={styles.loginWith}>Or Register with</Text>
-                  <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
-                </View>
-                <View style={styles.buttons}>
-                  <LogoButton
-                    source={require('../../../assets/facebook_icon.png')}
-                    onPress={() => {}}
-                  />
-                  <LogoButton
-                    source={require('../../../assets/google_icon.png')}
-                    onPress={(e) => {}}
-                  />
-                  <LogoButton
-                    source={require('../../../assets/apple_icon.png')}
-                    onPress={() => {}}
-                  />
-                </View>
-              </View>
             </View>
           </View>
         </View>

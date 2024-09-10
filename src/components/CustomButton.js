@@ -4,11 +4,12 @@ import {Text, StyleSheet, Pressable, ActivityIndicator} from 'react-native';
 
 import colors from '../utils/colors';
 
-const CustomButton = ({onPress, title, type = 'PRIMARY', loading = false}) => {
+const CustomButton = ({onPress, title, type = 'PRIMARY', loading = false, disabled=false}) => {
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.container, styles[`container_${type}`]]}>
+      disabled={disabled}
+      style={[styles.container, styles[`container_${type}`], disabled ? styles.disabled : null] }>
       {loading ? (
         <ActivityIndicator
           color={type === 'PRIMARY' ? 'white' : colors.primary}
@@ -39,7 +40,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.primary,
   },
-
+  disabled: {
+    backgroundColor: colors.grayBackground,
+    cursor: 'not-allowed',
+  },
   text: {
     fontWeight: 'bold',
     fontFamily: 'Urbanist',

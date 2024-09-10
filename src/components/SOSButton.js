@@ -5,60 +5,67 @@ import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 
 import colors from '../utils/colors';
 
-export default function SOSButton({onPressIn, onPressOut , children, isTapped = false}) {
+export default function SOSButton({
+  onPressIn,
+  onPressOut,
+  children,
+  isTapped = false,
+}) {
   const radius = 85; // Control the size centrally
 
   return (
     <View style={styles.container}>
       <View
         style={[
-          styles.middleCircle,
+          styles.outerCircle,
           {
-            width: radius * 3.4,
-            height: radius * 3.4,
-            borderRadius: radius * 1.7,
-            borderColor: isTapped ? 'rgba(255, 99, 71, 0.3)' : 'white',
+            width: radius * 4,
+            height: radius * 4,
+            borderRadius: radius * 2,
+            borderColor: isTapped ? 'rgba(255, 99, 71, 0.5)' : 'white',
             shadowColor: isTapped ? 'red' : colors.primary,
           },
         ]}>
-        <TouchableWithoutFeedback
+        <View
           style={[
-            styles.outerCircle,
+            styles.middleCircle,
             {
-              width: radius * 4,
-              height: radius * 4,
-              borderRadius: radius * 2,
-              borderColor: isTapped ? 'rgba(255, 99, 71, 0.5)' : 'white',
+              width: radius * 3.4,
+              height: radius * 3.4,
+              borderRadius: radius * 1.7,
+              borderColor: isTapped ? 'rgba(255, 99, 71, 0.3)' : 'white',
               shadowColor: isTapped ? 'red' : colors.primary,
             },
-          ]}
-          onPressIn={onPressIn}
-          onPressOut={onPressOut}
-          onLongPress={() => console.log('SOS Pressed')}
-          delayLongPress={5000}>
-          <View
-            style={[
-              styles.innerCircle,
-              {
-                width: radius * 3,
-                height: radius * 3,
-                borderRadius: radius * 1.5,
-                shadowColor: isTapped ? 'red' : colors.primary,
-              },
-            ]}>
+          ]}>
+          <TouchableWithoutFeedback
+            onPressIn={onPressIn}
+            onPressOut={onPressOut}
+            onLongPress={() => console.log('SOS Pressed')}
+            delayLongPress={5000}>
             <View
               style={[
-                styles.sosButton,
+                styles.innerCircle,
                 {
-                  width: radius * 2.5,
-                  height: radius * 2.5,
-                  borderRadius: radius * 1.25,
+                  width: radius * 3,
+                  height: radius * 3,
+                  borderRadius: radius * 1.5,
+                  shadowColor: isTapped ? 'red' : colors.primary,
                 },
               ]}>
-              {children}
+              <View
+                style={[
+                  styles.sosButton,
+                  {
+                    width: radius * 2.5,
+                    height: radius * 2.5,
+                    borderRadius: radius * 1.25,
+                  },
+                ]}>
+                {children}
+              </View>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </View>
       </View>
     </View>
   );
@@ -75,7 +82,7 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 150,
+    elevation: 100,
     // shadowRadius: 10,
   },
   middleCircle: {

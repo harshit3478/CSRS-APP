@@ -10,6 +10,7 @@ import CustomInput from '../../components/CustomInput';
 import HeaderSection from '../../components/HeaderSection';
 import colors from '../../utils/colors';
 import {useNavigation} from '@react-navigation/native';
+import BackButton from '../../components/BackButton';
 
 export default function AddContactScreen() {
   const {control, handleSubmit} = useForm();
@@ -26,9 +27,7 @@ export default function AddContactScreen() {
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
         <HeaderSection>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
-            <Pressable onPress={() => navigation.goBack()}>
-              <Icon name="chevron-left" size={20} color="white" />
-            </Pressable>
+           <BackButton/>
             <Text
               style={{
                 marginLeft: 10,

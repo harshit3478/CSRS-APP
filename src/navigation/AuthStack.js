@@ -16,7 +16,6 @@ const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
   return (
-    <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="authHome" component={AuthHomeScreen} />
         <Stack.Screen name="login" component={LoginScreen} />
@@ -27,7 +26,6 @@ const AuthStack = () => {
         <Stack.Screen name="resetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="registerWithGoogle" component={RegisterWithGoogleScreen} />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 

@@ -11,14 +11,14 @@ const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
   return (
-    <NavigationContainer>
+    <>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        <Stack.Screen name="SOSScreen" component={SOSScreen}/>
         <Stack.Screen name="AddContact" component={AddContactScreen}/>  
+        <Stack.Screen name="SOSScreen" component={SOSScreen}/>
         <Stack.Screen name="EditProfile" component={EditProfileScreen}/>
       </Stack.Navigator>
-    </NavigationContainer>
+    </>
   );
 };
 

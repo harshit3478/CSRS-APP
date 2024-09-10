@@ -11,17 +11,20 @@ import {
 
 
 import CustomInput from '../../components/CustomInput';
+import { useUser } from '../../context/userContext';
 import {Avatar} from '../../components/Avatar';
 import CustomButton from '../../components/CustomButton';
 import BackButton from '../../components/BackButton';
 import LogoButton from '../../components/LogoButton';
 import BottomSection from '../../components/BottomSection';
 import colors from '../../utils/colors';
+import { VERIFICATION_TYPES } from '../../constants/verificationTypes';
 
 const RegisterScreen = () => {
   const {control, handleSubmit, getValues} = useForm();
   const navigation = useNavigation();
   const [loading , setLoading] = React.useState(false)
+  const {updateVerificationDetails } = useUser();
   GoogleSignin.configure({
     androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
     webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
@@ -34,7 +37,6 @@ const RegisterScreen = () => {
     try {
       setLoading(true)
      await GoogleSignin.hasPlayServices();
-     await GoogleSignin.signOut()
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo)
       const userData = userInfo.data.user
@@ -58,30 +60,24 @@ const RegisterScreen = () => {
   async function handleSignUp(data) {
     try{
       setLoading(true)
-      const {name, email, phone, rollno, password} = data;
-      console.log(name, email, phone, rollno, password);
-      // API call to register user
-      // If successful, navigate to Home screen
-      console.log(process.env.API_URL);
-      const response = await fetch(process.env.API_URL + "/auth/v2/signup", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        phone: phone,
-        rollNo: rollno,
-        password: password,
-        deviceToken: '1234567890',
-      }),
-    });
-    const result = await response.json();
-    console.log(result);
-    if (response.ok) {
-      console.log('User registered successfully');
-      // navigation.navigate('Home');
+      // console.log('api url is ' , process.env.API_URL)
+      const response = await fetch(process.env.API_URL + "/auth/v1/signup/email", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+        }),
+      });
+      const result = await response.json();
+      console.log(result);
+      if (response.ok) {
+        ToastAndroid.show('Verification code sent successfully', ToastAndroid.LONG);
+      updateVerificationDetails(data , VERIFICATION_TYPES.REGISTER)
+      navigation.navigate("otp")
+    }else{
+      ToastAndroid.show('Error sending verification code : ' + result.message, ToastAndroid.LONG);
     }
   }catch(err){
     console.log("ERROR IS " , err )
@@ -199,18 +195,18 @@ const RegisterScreen = () => {
                   <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
                 </View>
                 <View style={styles.buttons}>
-                  <LogoButton
+                  {/* <LogoButton
                     source={require('../../../assets/facebook_icon.png')}
                     onPress={() => {}}
-                  />
+                  /> */}
                   <LogoButton
                     source={require('../../../assets/google_icon.png')}
                     onPress={(e) => googleSignUp(e)}
                   />
-                  <LogoButton
+                  {/* <LogoButton
                     source={require('../../../assets/apple_icon.png')}
                     onPress={() => {}}
-                  />
+                  /> */}
                 </View>
               </View>
             </View>
@@ -271,8 +267,11 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
+    flex: 1,
+    width: '100%',
+    // paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginVertical: 10,
     marginBottom: 50,
   },

@@ -12,7 +12,7 @@ const AuthHomeScreen = () => {
       <View style={styles.container}>
         <Image
           style={styles.image}
-          source={require('../../assets/securex.png')}
+          source={require('../../../assets/securex.png')}
           width={50}
           height={50}
         />
@@ -27,10 +27,7 @@ const AuthHomeScreen = () => {
             onPress={() => navigation.navigate('register')}
             type="OUTLINED"
           />
-          <CustomButton
-          title="OTP"
-          onPress={() => navigation.navigate('otp')}
-          />
+  
         </View>
         <View style={styles.motto}>
           <Text style={styles.subline}>An initiative by</Text>

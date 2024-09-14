@@ -2,9 +2,8 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
-import CustomInput from '../components/CustomInput';
 
 const AuthHomeScreen = () => {
   const navigation = useNavigation();
@@ -13,7 +12,7 @@ const AuthHomeScreen = () => {
       <View style={styles.container}>
         <Image
           style={styles.image}
-          source={require('../../assets/securex.png')}
+          source={require('../../../assets/securex.png')}
           width={50}
           height={50}
         />
@@ -28,10 +27,7 @@ const AuthHomeScreen = () => {
             onPress={() => navigation.navigate('register')}
             type="OUTLINED"
           />
-          <CustomButton
-          title="OTP"
-          onPress={() => navigation.navigate('otp')}
-          />
+  
         </View>
         <View style={styles.motto}>
           <Text style={styles.subline}>An initiative by</Text>

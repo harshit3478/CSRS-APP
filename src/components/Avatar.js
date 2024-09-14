@@ -18,7 +18,8 @@ export const Avatar = (props) => {
     }).then(image => {
       setUri(image.path);
       props.onChange?.(image);
-    });
+    }).catch(e => console.log(e));
+    
   };
   return (
     <TouchableOpacity onPress={pickPicture}>
@@ -34,8 +35,8 @@ export const Avatar = (props) => {
 const styles = StyleSheet.create({
   avatar: {
     paddingTop: 20,
-    height: 100,
-    width: 100,
+    height: 120,
+    width: 120,
     borderRadius: 100,
     padding: 20,
   },

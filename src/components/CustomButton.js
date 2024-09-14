@@ -1,15 +1,23 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Text, StyleSheet, Pressable} from 'react-native';
+import {Text, StyleSheet, Pressable, ActivityIndicator} from 'react-native';
 
 import colors from '../utils/colors';
 
-const CustomButton = ({onPress, title, type = 'PRIMARY'}) => {
+const CustomButton = ({onPress, title, type = 'PRIMARY', loading = false, disabled=false}) => {
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.container, styles[`container_${type}`]]}>
-      <Text style={[styles.text, styles[`text_${type}`]]}>{title}</Text>
+      disabled={disabled}
+      style={[styles.container, styles[`container_${type}`], disabled ? styles.disabled : null] }>
+      {loading ? (
+        <ActivityIndicator
+          color={type === 'PRIMARY' ? 'white' : colors.primary}
+          size={30}
+        />
+      ) : (
+        <Text style={[styles.text, styles[`text_${type}`]]}>{title}</Text>
+      )}
     </Pressable>
   );
 };
@@ -32,7 +40,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.primary,
   },
-
+  disabled: {
+    backgroundColor: colors.grayBackground,
+    cursor: 'not-allowed',
+  },
   text: {
     fontWeight: 'bold',
     fontFamily: 'Urbanist',

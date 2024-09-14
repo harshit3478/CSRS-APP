@@ -19,11 +19,15 @@ const styles = StyleSheet.create({
         paddingVertical:10,
         paddingHorizontal: 20,
         borderRadius: 5,
-        borderColor:colors.lightgray,
+        borderColor:colors.lightText,
         borderWidth: 1,
+        // flex:1,
+        alignItems:'center',
+        justifyContent:'center',
+        // back
     },
     logo:{
-        width: 50,
+        width: 70,
         height: 50,
     },
 })

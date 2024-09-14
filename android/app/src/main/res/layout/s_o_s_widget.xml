@@ -4,16 +4,23 @@
     android:layout_height="match_parent"
     android:theme="@style/AppTheme.AppWidgetContainer">
 
-    <TextView
-        android:id="@+id/appwidget_text"
-        style="@style/Widget.Csrs_react_native2.AppWidget.InnerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
+    <ImageView
+        android:id="@+id/sos_btn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/record"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/sos"/>
+
+<!--    &lt;!&ndash;Close button&ndash;&gt;-->
+<!--    <ImageView-->
+<!--        android:id="@+id/close_btn"-->
+<!--        android:layout_width="26dp"-->
+<!--        android:layout_height="26dp"-->
+<!--        android:layout_marginStart="40dp"-->
+<!--        android:src="@drawable/x"-->
+<!--        android:scaleType="fitCenter"-->
+<!--        android:adjustViewBounds="true"/>-->
 </RelativeLayout>

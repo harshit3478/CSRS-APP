@@ -1,11 +1,17 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {View, StyleSheet, TouchableWithoutFeedback, Text} from 'react-native';
+import SosBg from '../../assets/sos_bg.svg';
 
 import colors from '../utils/colors';
 
-export default function SOSButton({onPressIn, onPressOut , children, isTapped = false}) {
+export default function SOSButton({
+  onPressIn,
+  onPressOut,
+  children,
+  isTapped = false,
+}) {
   const radius = 85; // Control the size centrally
 
   return (
@@ -46,16 +52,11 @@ export default function SOSButton({onPressIn, onPressOut , children, isTapped = 
                 shadowColor: isTapped ? 'red' : colors.primary,
               },
             ]}>
-            <View
-              style={[
-                styles.sosButton,
-                {
-                  width: radius * 2.5,
-                  height: radius * 2.5,
-                  borderRadius: radius * 1.25,
-                },
-              ]}>
-              {children}
+            <View className="flex items-center justify-center p-2 relative text-center">
+              <SosBg className="w-50 h-50"/>
+              <View className="flex items-center justify-center w-full absolute text-center">
+                {children}
+              </View>
             </View>
           </View>
         </TouchableWithoutFeedback>

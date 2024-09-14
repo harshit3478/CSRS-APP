@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import {
   Image,
@@ -13,6 +14,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 // import { MenuIcon, MapPinIcon } from 'react-native-heroicons/outline';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { NativeModules } from 'react-native';
+import SharedGroupPreferences from 'react-native-shared-group-preferences';
+const group = 'group.asap';
+
+const { SharedStorage } = NativeModules;
 
 // import SosBg from '../../assets/sos_bg.svg';
 import HeaderSection from '../../components/HeaderSection';
@@ -27,6 +33,25 @@ export default function HomeScreen() {
   const animatedValue = new Animated.Value(1);
 
   useEffect(() => {
+    const widgetData = { widgetClicked: false };
+    async function setForIOS() {
+      try {
+        // iOS
+        await SharedGroupPreferences.setItem('widgetKey', widgetData, group);
+      } catch (error) {
+        console.log({error});
+      }
+    }
+
+    const widgetClicked = SharedStorage.get('widgetClicked');
+    console.log('widget code: ' + JSON.stringify(widgetClicked));
+
+    setForIOS();
+    // Android
+    SharedStorage.set('widgetClicked', false);
+  }, []);
+
+  useEffect(() => {
     let countdown;
 
     if (isPressed && timer > 0) {
@@ -35,16 +60,17 @@ export default function HomeScreen() {
       }, 1000);
     } else if (timer === 0) {
       clearInterval(countdown);
-      
+
       navigation.navigate('SOSScreen');
     }
 
     return () => clearInterval(countdown);
-  }, [isPressed, timer]);
+  }, [isPressed, navigation, timer]);
 
   const handlePressIn = () => {
     if (!isPressed) {
-      animatePress();}
+      animatePress();
+    }
     setIsPressed(true);
   };
 
@@ -62,23 +88,23 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView >
+    <SafeAreaView>
       <HeaderSection>
-          <View className="flex-row items-center space-x-2">
-            {/* <MapPinIcon size={30} color="white" /> */}
-            <Icon name="location-outline" size={30} color="white" />
-            <View>
-              <Text className="text-base font-semibold text-white">
-                Kharagpur
-              </Text>
-              <Text className="text-xs text-white">
-                Nalanda Classroom Complex
-              </Text>
-            </View>
-          </View>
+        <View className="flex-row items-center space-x-2">
+          {/* <MapPinIcon size={30} color="white" /> */}
+          <Icon name="location-outline" size={30} color="white" />
           <View>
-            <Icon name="menu-outline" size={30} color="white" />
+            <Text className="text-base font-semibold text-white">
+              Kharagpur
+            </Text>
+            <Text className="text-xs text-white">
+              Nalanda Classroom Complex
+            </Text>
           </View>
+        </View>
+        <View>
+          <Icon name="menu-outline" size={30} color="white" />
+        </View>
       </HeaderSection>
       {/* <View className="bg-[#4E32FF] rounded-b-2xl p-4 shadow-md">
         <View className="flex-row justify-between items-center">
@@ -101,20 +127,25 @@ export default function HomeScreen() {
           </Text>
         </View>
       </View> */}
-      <SOSButton onPressIn={handlePressIn} onPressOut={handlePressOut} isTapped={isPressed}>
+      <SOSButton
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        isTapped={isPressed}>
         <View className="flex w-full  items-center justify-center  text-center bg-blue-20">
-          {isPressed ?
-           <Text className="text-white text-9xl font-urbanist p-2">{timer}</Text> 
-           : 
-           <>
-           <Text className="text-white text-7xl font-urbanist">SOS</Text>
-          <Text className="text-white text-2xl font-urbanist">Hold for 5s</Text>
-           </>
-           }
-         
+          {isPressed ? (
+            <Text className="text-white text-7xl font-urbanist p-2">
+              {timer}
+            </Text>
+          ) : (
+            <>
+              <Text className="text-white text-5xl" style={{ fontFamily: 'Urbanist-SemiBold' }}>SOS</Text>
+              <Text className="text-white text-lg font-urbanist" style={{ fontFamily: 'Urbanist-Bold' }}>
+                Hold for 5s
+              </Text>
+            </>
+          )}
         </View>
       </SOSButton>
     </SafeAreaView>
   );
 }
-

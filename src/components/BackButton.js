@@ -6,12 +6,12 @@ import {useNavigation} from '@react-navigation/native';
 
 import colors from '../utils/colors';
 
-export default function BackButton() {
+export default function BackButton({color= "white"}) {
   const navigation = useNavigation();
   return (
     
       <TouchableOpacity style={styles.container} onPress={() => navigation.goBack()}>
-        <Icon name="chevron-left" size={20} color={colors.white} />
+        <Icon name="chevron-left" size={20} color={color} />
       </TouchableOpacity>
   
   );

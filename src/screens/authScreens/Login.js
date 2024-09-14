@@ -123,6 +123,8 @@ const LoginScreen = () => {
       console.log(result);
       if (result.isSuccess) {
         ToastAndroid.show('Logged in successfully', ToastAndroid.LONG);
+        login(result.data);
+        // navigation.navigate("TabNavigator")
       } else {
         ToastAndroid.show(result.message, ToastAndroid.LONG);
       }
@@ -138,71 +140,79 @@ const LoginScreen = () => {
       <SafeAreaView>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.container}>
-            <BackButton />
+            <View style={styles.innerContainer}>
+              <BackButton />
 
-            <View style={styles.motto}>
-              <Text style={styles.heading}>Welcome back!</Text>
-              <Text style={styles.subHeading}>Login to get started</Text>
-            </View>
-
-            <View style={styles.form}>
-              <CustomInput
-                control={control}
-                name="email"
-                rules={{
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: 'Enter a valid email address',
-                  },
-                }}
-                placeholder="Enter your email"
-                keyboardType="email-address"
-              />
-
-              <CustomInput
-                control={control}
-                name="password"
-                rules={{required: 'Password is required'}}
-                placeholder="Enter your password"
-                secureTextEntry={true}
-              />
-              <Link style={styles.forgot} to="/forgotPassword">
-                Forgot password?
-              </Link>
-              <CustomButton
-                title="Login"
-                onPress={handleSubmit(handleLogin)}
-                loading={loading}
-                disabled={loading}
-              />
-            <View style={styles.thirdParty}>
-              <View style={styles.line}>
-                <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
-                <Text style={styles.loginWith}>Or Login with</Text>
-                <View style={{flex: 1, height: 1, backgroundColor: 'gray'}} />
+              <View style={styles.motto}>
+                <Text style={styles.heading}>Welcome back!</Text>
+                <Text style={styles.subHeading}>Login to get started</Text>
               </View>
-              <View style={styles.buttons}>
-                {/* <LogoButton
+
+              <View style={styles.form}>
+                <CustomInput
+                  control={control}
+                  name="email"
+                  rules={{
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: 'Enter a valid email address',
+                    },
+                  }}
+                  placeholder="Enter your email"
+                  keyboardType="email-address"
+                />
+
+                <CustomInput
+                  control={control}
+                  name="password"
+                  rules={{required: 'Password is required'}}
+                  placeholder="Enter your password"
+                  secureTextEntry={true}
+                />
+                <Link style={styles.forgot} to="/forgotPassword">
+                  Forgot password?
+                </Link>
+                <CustomButton
+                  title="Login"
+                  onPress={handleSubmit(handleLogin)}
+                  loading={loading}
+                  disabled={loading}
+                />
+                <View style={styles.thirdParty}>
+                  <View style={styles.line}>
+                    <View
+                      style={{flex: 1, height: 1, backgroundColor: 'gray'}}
+                    />
+                    <Text style={styles.loginWith}>Or Login with</Text>
+                    <View
+                      style={{flex: 1, height: 1, backgroundColor: 'gray'}}
+                    />
+                  </View>
+                  <View style={styles.buttons}>
+                    {/* <LogoButton
                     source={require('../../../assets/facebook_icon.png')}
                     onPress={() => {}}
                   /> */}
-                <LogoButton
-                  source={require('../../../assets/google_icon.png')}
-                  onPress={e => googleSignIn(e)}
-                />
-                {/* <LogoButton
+                    <LogoButton
+                      source={require('../../../assets/google_icon.png')}
+                      onPress={e => googleSignIn(e)}
+                    />
+                    {/* <LogoButton
                     source={require('../../../assets/apple_icon.png')}
                     onPress={() => {}}
                   /> */}
+                  </View>
+                </View>
               </View>
             </View>
-            </View>
+            <View style={styles.bottomSection}>
             <BottomSection
               des="Don't have an account?"
               linkText="Register Now"
               linkPath="/register"
             />
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -213,12 +223,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    alignItems: 'center',
-    padding: 20,
+    gap: 20,
   },
   scrollContainer: {
+    minHeight : height,
     flexGrow: 1,
   },
+  innerContainer: {
+    flex: 1,
+    padding: 20,
+    width: '100%',
+  },
+  bottomSection:{
+    marginTop: 20,
+  },
+  
   form: {
     width: '100%',
     marginVertical: 20,
@@ -264,6 +283,5 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
 });
-
 
 export default LoginScreen;

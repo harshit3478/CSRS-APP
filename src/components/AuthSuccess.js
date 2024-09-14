@@ -16,7 +16,7 @@ export default function AuthSuccess({title, subText, btnText, onPress}) {
           <Text className="font-bold text-[33px] text-center text-black w-full">
             {title}
           </Text>
-          <Text className="font-light text-2xl  px-3 text-center font-['urbainst'] mb-10 ">
+          <Text className="font-light text-2xl text-slate-600 px-3 text-center font-['urbainst'] mb-10 ">
             {subText}
           </Text>
         </View>

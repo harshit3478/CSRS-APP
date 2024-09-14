@@ -17,6 +17,7 @@ import {useAuth} from '../../context/authenticationContext';
 import CustomButton from '../../components/CustomButton';
 import BackButton from '../../components/BackButton';
 import colors from '../../utils/colors';
+import { VERIFICATION_TYPES } from '../../constants/verificationTypes';
 
 export default function OtpScreen({navigation}) {
   const otpTimes = [30, 60, 90]; // Define possible countdowns for resend attempts
@@ -81,7 +82,8 @@ export default function OtpScreen({navigation}) {
           await completeRegistration();
         } else if (verificationType === 'RESET_PASSWORD') {
           // Call the reset password API
-          console.log('Resetting password for user with email:', email);
+          ToastAndroid.show('going on reset password screen', ToastAndroid.LONG)
+          navigation.navigate('resetPassword')
         }
       } else {
         ToastAndroid.show('Error verifying user: ' + result.message, ToastAndroid.LONG);
@@ -158,8 +160,16 @@ export default function OtpScreen({navigation}) {
       startTimer(otpTimes[resendCounter + 1]);
       // Alert.alert('OTP Sent', 'A new OTP has been sent to your email.');
       // code for resending code here
+      let url = ''
+      if(verificationType === VERIFICATION_TYPES.RESET_PASSWORD){
+         url = process.env.API_URL + '/auth/v1/login/email'
+      }
+      else{
+         url = process.env.API_URL + '/auth/v1/signup/email'
+      }
+
       const response = await fetch(
-        process.env.API_URL + '/auth/v1/signup/email',
+        url,
         {
           method: 'POST',
           headers: {
@@ -201,7 +211,7 @@ export default function OtpScreen({navigation}) {
         <View style={styles.motto}>
           <Text style={styles.heading}>Verification Code</Text>
           <Text style={styles.subHeading}>
-            We have sent you a verification code to your email address.
+            We have sent a verification code to {email}
           </Text>
         </View>
 

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 export default  {
-    primary : '#4E32FF',
+    // primary : '#4E32FF',
+    primary : 'green',
     secondary : '#1E232C',
     dark : '#000',
     white : '#fff',

@@ -1,31 +1,33 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import colors from '../utils/colors';
 
-export default function BackButton() {
+export default function BackButton({color= "white"}) {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-        <Icon name="chevron-left" size={20} color="black" />
-      </TouchableWithoutFeedback>
-    </View>
+    
+      <TouchableOpacity style={styles.container} onPress={() => navigation.goBack()}>
+        <Icon name="chevron-left" size={20} color={color} />
+      </TouchableOpacity>
+  
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'flex-start',
-    borderColor: colors.lightgray,
-    borderWidth: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 13,
-    paddingVertical: 10,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // backgroundColor: colors.white,
+    // borderColor: colors.white,
+    // borderWidth: 1,
+    padding: 10,
+    color: colors.white,
     borderRadius: 10,
+    
   },
 });

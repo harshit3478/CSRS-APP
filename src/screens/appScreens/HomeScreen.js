@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Animated,
   StatusBar,
+  Button,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -21,8 +22,10 @@ const group = 'group.asap';
 const { SharedStorage } = NativeModules;
 
 // import SosBg from '../../assets/sos_bg.svg';
+import { useAuth } from '../../context/authenticationContext';
 import HeaderSection from '../../components/HeaderSection';
 import SOSButton from '../../components/SOSButton';
+import CustomButton from '../../components/CustomButton';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -30,6 +33,7 @@ export default function HomeScreen() {
   const [timer, setTimer] = useState(5); // Timer starts at 5 seconds
   const [isPressed, setIsPressed] = useState(false);
   const [color, setColor] = useState('bg-blue-400'); // Initial color blue
+  const {logout} = useAuth(); // Logout function
   const animatedValue = new Animated.Value(1);
 
   useEffect(() => {
@@ -127,23 +131,22 @@ export default function HomeScreen() {
           </Text>
         </View>
       </View> */}
-      <SOSButton
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        isTapped={isPressed}>
+      <Button
+        title="Logout"
+        onPress={logout}
+        style="bg-red-500"
+      />
+      <SOSButton onPressIn={handlePressIn} onPressOut={handlePressOut} isTapped={isPressed}>
         <View className="flex w-full  items-center justify-center  text-center bg-blue-20">
-          {isPressed ? (
-            <Text className="text-white text-7xl font-urbanist p-2">
-              {timer}
-            </Text>
-          ) : (
-            <>
-              <Text className="text-white text-5xl" style={{ fontFamily: 'Urbanist-SemiBold' }}>SOS</Text>
-              <Text className="text-white text-lg font-urbanist" style={{ fontFamily: 'Urbanist-Bold' }}>
-                Hold for 5s
-              </Text>
-            </>
-          )}
+          {isPressed ?
+           <Text className="text-white text-9xl font-urbanist p-2">{timer}</Text> 
+           : 
+           <>
+           <Text className="text-white text-7xl font-urbanist">SOS</Text>
+          <Text className="text-white text-2xl font-urbanist">Hold for 5s</Text>
+           </>
+           }
+
         </View>
       </SOSButton>
     </SafeAreaView>

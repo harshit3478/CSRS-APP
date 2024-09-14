@@ -1,14 +1,50 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
+import {View, Text, SafeAreaView, ToastAndroid} from 'react-native';
+import { useForm } from 'react-hook-form';
 
-import {View, Text, SafeAreaView} from 'react-native';
+import { useUser } from '../../context/userContext';
 import BackButton from '../../components/BackButton';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import { useForm } from 'react-hook-form';
 
 export default function ResetPasswordScreen({navigation}) {
-    const {control , handleSubmit} = useForm();
+    const {control , handleSubmit, getValues} = useForm();
+    const [loading , setLoading] = useState(false);
+    const {verificationDetails} = useUser();
+    const {email } = verificationDetails;
+
+    async function handleResetPassword(data){
+        console.log(data)
+        const {password} = data;
+        try{
+            setLoading(true)
+            // Call the reset password API
+            console.log('email is ' , email)
+            console.log('password is ' , password)
+            console.log("api url is " , process.env.API_URL)
+            const response = await fetch(process.env.API_URL + "/auth/v2/update/password", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( {email , password}),
+            });
+            const result = await response.json();
+            console.log(result);
+            if(response.ok){
+                ToastAndroid.show('Password reset successfully', ToastAndroid.LONG);
+                navigation.navigate('authSuccess' , {title : 'Password Changed!' , subText:'Your password has been changed successfully.' , btnText : 'Back to login' , path: 'login'})
+            }else{
+                ToastAndroid.show('Error resetting password : ' + result.message, ToastAndroid.LONG);
+            }
+        }catch(err){
+            console.log("ERROR IS " , err)
+        }finally{
+            setLoading(false)
+        }
+    }
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 p-5 bg-blue-30 gap-5 items-start">
@@ -24,23 +60,41 @@ export default function ResetPasswordScreen({navigation}) {
           </Text>
         </View>
         <View className="mt-10 p-0 m-0 self-stretch">
-            <CustomInput
-              control={control}
-              name="password"
-              label="New Password"
-              placeholder="New password"
-              keyboardType="text"
-            />
-            <CustomInput
-              control={control}
-              name="cnfpassword"
-              label="Confirm New Password"
-              placeholder="Confirm new password"
-              keyboardType="text"
-            />
+        <CustomInput
+                control={control}
+                name="password"
+                placeholder="Password"
+                secureTextEntry={true}
+                rules={{
+                  required: 'Password is required',
+                  minLength: {
+                    value: 6,
+                    message: 'Password must be at least 6 characters long',
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/,
+                    message:
+                      'Password must be strong (include letters, numbers, and special characters)',
+                  },
+                }}
+              />
+              <CustomInput
+                control={control}
+                name="cnfpassword"
+                placeholder="Confirm Password"
+                secureTextEntry={true}
+                rules={{
+                  required: 'Confirm Password is required',
+                  validate: value =>
+                    value === getValues('password') || 'Passwords do not match',
+                }}
+              />
+
             <CustomButton
               title="Reset Password"
-              onPress={handleSubmit(data => navigation.navigate('authSuccess' , {title : 'Password Changed!' , subText:'Your password has been changed successfully.' , btnText : 'Back to login' , path: 'login'}))}
+              onPress={handleSubmit(handleResetPassword)}
+              loading={loading}
+              disabled={loading}
             />
           </View>
         

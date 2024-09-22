@@ -43,14 +43,14 @@ export default function AddContactScreen() {
         </HeaderSection>
         <View style={{padding: 10}}>
             <View className="w-[140] h-[140] rounded-full bg-white mx-auto my-5 justify-center items-center " style={{elevation: 10}}>
-          <Avatar
-            source={
-              selectedImage
-                ? {uri: selectedImage.path}
-                : require('../../../assets/profile.png')
-            } 
-            onChange={handleImageChange}
-          />
+            <Avatar
+              source={
+                selectedImage
+                  ? {uri: selectedImage.path}
+                  : require('../../../assets/profile.png')
+              } 
+              onChange={handleImageChange}
+            />
             </View>
           <CustomInput
             control={control}

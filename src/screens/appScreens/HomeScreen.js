@@ -1,98 +1,54 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Animated,
-  StatusBar,
-  Button,
-} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Button, Animated } from "react-native";
+
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
-// import { MenuIcon, MapPinIcon } from 'react-native-heroicons/outline';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { NativeModules } from 'react-native';
-import SharedGroupPreferences from 'react-native-shared-group-preferences';
-const group = 'group.asap';
 
-const { SharedStorage } = NativeModules;
 
-// import SosBg from '../../assets/sos_bg.svg';
-import { useAuth } from '../../context/authenticationContext';
 import HeaderSection from '../../components/HeaderSection';
-import SOSButton from '../../components/SOSButton';
-import CustomButton from '../../components/CustomButton';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-
-  const [timer, setTimer] = useState(5); // Timer starts at 5 seconds
-  const [isPressed, setIsPressed] = useState(false);
-  const [color, setColor] = useState('bg-blue-400'); // Initial color blue
-  const {logout} = useAuth(); // Logout function
+  const [pressing, setPressing] = useState(false);
+  const [timer, setTimer] = useState(5);
+  const [SOSActive,setSOSActive] = useState(false);
   const animatedValue = new Animated.Value(1);
 
   useEffect(() => {
-    const widgetData = { widgetClicked: false };
-    async function setForIOS() {
-      try {
-        // iOS
-        await SharedGroupPreferences.setItem('widgetKey', widgetData, group);
-      } catch (error) {
-        console.log({error});
-      }
-    }
-
-    const widgetClicked = SharedStorage.get('widgetClicked');
-    console.log('widget code: ' + JSON.stringify(widgetClicked));
-
-    setForIOS();
-    // Android
-    SharedStorage.set('widgetClicked', false);
-  }, []);
-
-  useEffect(() => {
-    let countdown;
-
-    if (isPressed && timer > 0) {
-      countdown = setInterval(() => {
-        setTimer(prevTimer => prevTimer - 1);
+    let interval = null;
+    if (pressing) {
+      interval = setInterval(() => {
+        setTimer((prevTime) => prevTime > 0 ? prevTime-1: 0);
       }, 1000);
-    } else if (timer === 0) {
-      clearInterval(countdown);
-
-      navigation.navigate('SOSScreen');
+    } else if (!pressing && timer !== 5) {
+      clearInterval(interval);
+      setTimer(5);
     }
-
-    return () => clearInterval(countdown);
-  }, [isPressed, navigation, timer]);
-
-  const handlePressIn = () => {
-    if (!isPressed) {
-      animatePress();
+    if (timer === 0) {
+      handleEmergency();
+      setSOSActive(true);
     }
-    setIsPressed(true);
+    return () => clearInterval(interval);
+  }, [pressing, timer]);
+
+  const handleEmergency = () => {
+    Alert.alert(
+      "Emergency Alert",
+      "Your emergency contacts and services have been notified!"
+    );
   };
 
-  const handlePressOut = () => {
-    setIsPressed(false);
-    setTimer(5); // Reset timer
-  };
-
-  const animatePress = () => {
-    Animated.timing(animatedValue, {
-      toValue: 1.5,
-      duration: 5000, // Timer duration
-      useNativeDriver: true,
-    }).start();
-  };
+  const cancelSOS = () => {
+    setTimer(5);
+    setSOSActive(false);
+    setPressing(false)
+  }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{
+      flex:1
+    }} >
       <HeaderSection>
         <View className="flex-row items-center space-x-2">
           {/* <MapPinIcon size={30} color="white" /> */}
@@ -110,45 +66,152 @@ export default function HomeScreen() {
           <Icon name="menu-outline" size={30} color="white" />
         </View>
       </HeaderSection>
-      {/* <View className="bg-[#4E32FF] rounded-b-2xl p-4 shadow-md">
-        <View className="flex-row justify-between items-center">
-        </View>
-      </View> */}
-      <View className="flex-col py-16 px-5 space-y-2">
-        <Text className="text-2xl text-center text-black font-urbanist font-medium">
-          Are you in an Emergency?
-        </Text>
-        <Text className="text-lg text-center text-neutral-500 font-urbanist font-normal">
+      <View style={styles.container}>
+        <Text style={styles.title}>  {pressing ? !SOSActive ? 'Generating SOS...': 'Help is on the way ...' : 'Are you in Emergency?'} </Text>
+        <Text style={styles.subtitle}>
           Press for 5 seconds in case of emergency. Your emergency contacts and
           nearby rescue services will be notified.
         </Text>
-      </View>
-      {/* <View className="flex items-center justify-center relative text-center">
-        <SosBg className="w-40 h-40"/>
-        <View className="flex items-center justify-center w-full absolute text-center">
-          <Text className="text-white text-5xl font-urbanist">
-            SOS
-          </Text>
-        </View>
-      </View> */}
-      <Button
-        title="Logout"
-        onPress={logout}
-        style="bg-red-500"
-      />
-      <SOSButton onPressIn={handlePressIn} onPressOut={handlePressOut} isTapped={isPressed}>
-        <View className="flex w-full  items-center justify-center  text-center bg-blue-20">
-          {isPressed ?
-           <Text className="text-white text-9xl font-urbanist p-2">{timer}</Text> 
-           : 
-           <>
-           <Text className="text-white text-7xl font-urbanist">SOS</Text>
-          <Text className="text-white text-2xl font-urbanist">Hold for 5s</Text>
-           </>
-           }
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPressIn={() => setPressing(true)}
+          onPressOut={() => setPressing(false)}
+          style={styles.sosButton}
+        >
+            <View>
+              {
+                SOSActive ? (
+                  <Text style={styles.sosText}> 00:00 </Text>
+                ):
+                  <View>
+                    <Text style={styles.sosText}>SOS</Text>
+                    <Text style={styles.sosSubtitle}> Press for {timer} seconds</Text>  
+                  </View> 
+              }
+            </View>
+          
+        </TouchableOpacity>
 
-        </View>
-      </SOSButton>
+        {
+          SOSActive ? (
+            <TouchableOpacity onPress={cancelSOS}
+            >
+            <Text 
+              >X Cancel SOS
+            </Text>
+          </TouchableOpacity>): null
+        }
+
+      </View>
+
+
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5F5F5",
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 20,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#666",
+    textAlign: "center",
+    paddingHorizontal: 20,
+    marginBottom: 50,
+  },
+  sosButton: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: "#FF3B30",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    marginBottom: 40
+  },
+  sosText: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#FFF",
+  },
+  sosSubtitle: {
+    fontSize: 14,
+    color: "#FFF",
+    marginTop: 5,
+  },
+  sosCancel: {
+    color: '#FF3B30'
+  }
+
+});
+
+
+  // import { MenuIcon, MapPinIcon } from 'react-native-heroicons/outline';
+// import { NativeModules } from 'react-native';
+// import SharedGroupPreferences from 'react-native-shared-group-preferences';
+// const group = 'group.asap';
+// const { SharedStorage } = NativeModules;
+// import SosBg from '../../assets/sos_bg.svg';
+// import { useAuth } from '../../context/authenticationContext';
+// import SOSButton from '../../components/SOSButton';
+// import CustomButton from '../../components/CustomButton';
+
+  // const [timer, setTimer] = useState(5); // Timer starts at 5 seconds
+
+  // const [color, setColor] = useState('bg-blue-400'); // Initial color blue
+  // const {logout} = useAuth(); // Logout function
+  // useEffect(() => {
+  //   const widgetData = { widgetClicked: false };
+  //   async function setForIOS() {
+  //     try {
+  //       // iOS
+  //       await SharedGroupPreferences.setItem('widgetKey', widgetData, group);
+  //     } catch (error) {
+  //       console.log({error});
+  //     }
+  //   }
+
+  //   const widgetClicked = SharedStorage.get('widgetClicked');
+  //   console.log('widget code: ' + JSON.stringify(widgetClicked));
+
+  //   setForIOS();
+  //   // Android
+  //   SharedStorage.set('widgetClicked', false);
+  // }, []);
+
+  // useEffect(() => {
+  //   let countdown;
+
+  //   if (isPressed && timer > 0) {
+  //     countdown = setInterval(() => {
+  //       setTimer(prevTimer => prevTimer - 1);
+  //     }, 1000);
+  //   } else if (timer === 0) {
+  //     clearInterval(countdown);
+
+  //     navigation.navigate('SOSScreen');
+  //   }
+
+  //   return () => clearInterval(countdown);
+  // }, [isPressed, navigation, timer]);
+
+  // const animatePress = () => {
+  //   Animated.timing(animatedValue, {
+  //     toValue: 1.5,
+  //     duration: 5000, // Timer duration
+  //     useNativeDriver: true,
+  //   }).start();
+  // };

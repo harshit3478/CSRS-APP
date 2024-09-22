@@ -36,7 +36,7 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
 
   GoogleSignin.configure({
-    androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
+    // androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
     webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
     offlineAccess: false,
     scopes: ['profile', 'email'],

@@ -12,7 +12,7 @@
 
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" android:required="false"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" android:required="true"/>
     <application
         android:name=".MainApplication"
         android:allowBackup="false"

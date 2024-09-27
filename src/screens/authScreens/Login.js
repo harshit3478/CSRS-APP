@@ -67,7 +67,7 @@ const LoginScreen = () => {
         console.log('api url is : ', process.env.API_URL);
 
         const response = await fetch(
-          process.env.API_URL + '/auth/v2/login/google',
+          "http://192.168.224.183:5000" + '/auth/v2/login/google',
           {
             method: 'POST',
             headers: {

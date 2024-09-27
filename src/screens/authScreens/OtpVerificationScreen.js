@@ -26,7 +26,8 @@ export default function OtpScreen({navigation}) {
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(otpTimes[0]);
   const [resendCounter, setResendCounter] = useState(0);
-  const {verificationDetails, verificationType} = useUser();
+  const {verificationDetails, verificationType , deviceToken} = useUser();
+  console.log('device token in register : ' , deviceToken)
   const {login} = useAuth();
   // console.log('Verification Details:', verificationDetails);
   const {email} = verificationDetails;
@@ -111,7 +112,7 @@ export default function OtpScreen({navigation}) {
           phone: verificationDetails.phone,
           rollNo: verificationDetails.rollno,
           password: verificationDetails.password,
-          deviceToken: '1234567890',
+          deviceToken: deviceToken,
         }),
       });
       const result = await response.json();

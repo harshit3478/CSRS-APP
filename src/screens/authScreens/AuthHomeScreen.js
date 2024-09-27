@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, { useEffect }from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import { useUser } from '../../context/userContext';
+import messaging from '@react-native-firebase/messaging';
 
 const AuthHomeScreen = () => {
   const navigation = useNavigation();
@@ -12,13 +13,19 @@ const AuthHomeScreen = () => {
   const { updateDeviceToken , deviceToken } = useUser();
   console.log("deviceToken" , deviceToken)
   async function getFCMToken() {
-    const fcmToken = await messaging().getToken();
-    if (fcmToken) {
-      console.log('Your Firebase Token is:', fcmToken);
-      updateDeviceToken(fcmToken)
-      
-    } else {
-      console.log('Failed', 'No token received');
+    try{
+
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        console.log('Your Firebase Token is:', fcmToken);
+        updateDeviceToken(fcmToken)
+        
+      } else {
+        console.log('Failed', 'No token received');
+      }
+    }catch(error){
+
+      console.log("error in fetching token :" ,error);
     }
   }
   useEffect(() => {

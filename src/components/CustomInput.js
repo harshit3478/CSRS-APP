@@ -57,10 +57,12 @@ const CustomInput = ({
                 styles.input,
                 isFocused && styles.input.onFocused,
                 !isEditable && styles.disabled,
+                !editable && styles.disabled,
               ]}
               secureTextEntry={secureTextEntry}
               placeholderTextColor='#a3aeba'
-              editable={isEditable} // Control editability
+              editable={isEditable && editable} // Control editability
+              
               keyboardType={keyboardType}
               placeholderStyle={{ fontFamily: 'Urbanist', fontScale: fontScale(16) }}
             />

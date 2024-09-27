@@ -181,7 +181,6 @@ export default function HomeScreen() {
           </Text>
         </View>
       </View> */}
-      <Button title="Logout" onPress={initiateEmergency} style="bg-red-500" />
       <SOSButton
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}

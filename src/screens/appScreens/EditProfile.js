@@ -54,7 +54,7 @@ export default function EditProfileScreen({route}) {
       state: state,
       pincode: pincode,
     };
-    console.log('formchanged', formValues, initialValues,isFormChanged);
+    // console.log('formchanged', formValues, initialValues,isFormChanged);
     // Check if the current form values differ from the initial values
     const hasChanged = Object.keys(initialValues).some(
       (key) => formValues[key] !== initialValues[key]
@@ -89,7 +89,7 @@ export default function EditProfileScreen({route}) {
           name: selectedImage.path.split('/').pop(), // Extracts the filename from the path
         });
       }
-
+      console.log("api url is " , process.env.API_URL)
       const response = await fetch(`${process.env.API_URL}/user/v2/update/profile`, {
         method: 'POST',
         headers: {

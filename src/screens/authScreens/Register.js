@@ -24,9 +24,10 @@ const RegisterScreen = () => {
   const {control, handleSubmit, getValues} = useForm();
   const navigation = useNavigation();
   const [loading , setLoading] = React.useState(false)
-  const {updateVerificationDetails } = useUser();
+  const {updateVerificationDetails , deviceToken } = useUser();
+  
   GoogleSignin.configure({
-    androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
+    // androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
     webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
     offlineAccess: false, // If you need serverAuthCode for server-side token exchange
     scopes: ['profile', 'email'], // Request access to profile and email
@@ -120,6 +121,7 @@ const RegisterScreen = () => {
                 name="email"
                 placeholder="Institute Email"
                 keyboardType="email-address"
+                // icon={<Icon>hello</Icon>}
                 rules={{
                   required: 'Email is required',
                   pattern: {

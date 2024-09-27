@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Image, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Button, Image, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -13,7 +13,7 @@ import BackButton from '../../components/BackButton';
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const [selectedImage, setSelectedImage] = React.useState(null);
-  const {user} = useAuth();
+  const {user,logout} = useAuth();
   const {email, phone, hall, address, username , rollNo, imageUrl } = user.data;
 
   const detailCard = ({title, value}) => {
@@ -81,6 +81,8 @@ export default function ProfileScreen() {
             {detailCard({title: 'Address', value: address})}
 
           </View>
+          <Button title="Logout" onPress={logout} style="bg-red-500" />
+
         </View>
       </SafeAreaView>
     </>

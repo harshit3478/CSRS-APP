@@ -17,6 +17,7 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import BackButton from '../../components/BackButton';
 import colors from '../../utils/colors';
+import { useUser } from '../../context/userContext';
 
 const RegisterWithGoogleScreen = ({route}) => {
   const {control, handleSubmit, register, getValues} = useForm();
@@ -24,6 +25,8 @@ const RegisterWithGoogleScreen = ({route}) => {
   const {email, name} = route.params;
   const [loading, setLoading] = React.useState(false);
   const {login} = useAuth();
+  const { deviceToken} = useUser()
+  console.log('device token in register : ' , deviceToken)
   async function handleRegister(data) {
     console.log(data);
     const {name, email, phone, rollno, password} = data;
@@ -42,7 +45,7 @@ const RegisterWithGoogleScreen = ({route}) => {
           phone,
           rollNo:rollno,
           password,
-          deviceToken: '1234',
+          deviceToken: deviceToken,
         }),
       });
       const res = await response.json();
@@ -50,7 +53,10 @@ const RegisterWithGoogleScreen = ({route}) => {
       if (res.isSuccess) {
         ToastAndroid.show('Registration Successful', ToastAndroid.LONG);
         login(res.data);
-        navigation.navigate("App" , {screen: "TabNavigator", params: {screen: "Profile"}})
+        navigation.navigate('App', {
+          screen: 'EditProfile',
+          params: {title: 'Complete Profile'},
+        });
       } else {
         ToastAndroid.show('Registration Failed', ToastAndroid.LONG);
       }
@@ -88,7 +94,7 @@ const RegisterWithGoogleScreen = ({route}) => {
                 name="email"
                 placeholder="Institute Email"
                 keyboardType="email-address"
-                disabled={true}
+                editable={false}
                 defaultValue={email}
               />
               <CustomInput

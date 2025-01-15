@@ -21,6 +21,7 @@
     "react": "18.2.0",
     "react-hook-form": "^7.52.0",
     "react-native": "^0.74.2",
+    "react-native-config": "^1.5.3",
     "react-native-contacts": "^7.0.8",
     "react-native-dotenv": "^3.4.11",
     "react-native-heroicons": "^4.0.0",

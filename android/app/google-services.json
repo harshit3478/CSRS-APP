@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "690505830379",
+    "project_id": "csrs-react-native-app",
+    "storage_bucket": "csrs-react-native-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690505830379:android:66e08e979a3d41fd4d93ae",
+        "android_client_info": {
+          "package_name": "com.csrs_react_native2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEtM4bk9_9grmhsA1gzZkUf5JIjag3BH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

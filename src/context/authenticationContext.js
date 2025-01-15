@@ -8,7 +8,7 @@ const AuthenticationContext = createContext();
 export const AuthenticationProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  // console.log('user', user);
   useEffect(() => {
     const loadUserData = async () => {
       try {
@@ -40,6 +40,8 @@ export const AuthenticationProvider = ({children}) => {
     try {
       setUser(null);
       await AsyncStorage.removeItem('user'); // Clear user data on logout
+      // clear the contacts and other data associated with user
+      await AsyncStorage.removeItem('contacts');
     } catch (error) {
       console.error('Error clearing user data', error);
     }

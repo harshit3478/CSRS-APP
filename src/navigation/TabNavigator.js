@@ -11,6 +11,7 @@ const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
   return (
+    <>
     <Tab.Navigator screenOptions={{headerShown: false}}>
       <Tab.Screen
         name="Home"
@@ -26,10 +27,10 @@ export default function TabNavigator() {
         component={ProfileScreen}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="user-o" color={color} size={size} />
+            <Icon name="user" color={color} size={size} />
           ),
         }}
-      />
+        />
       <Tab.Screen
         name="Contacts"
         component={ContactScreen}
@@ -38,7 +39,8 @@ export default function TabNavigator() {
             <Icon name="users" color={color} size={size} />
           ),
         }}
-      />
+        />
     </Tab.Navigator>
+        </>
   );
 }

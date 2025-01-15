@@ -11,5 +11,7 @@ export default  {
     lightText : '#A7A7A7',
     darkText : '#1E232C',
     lightPrimary: 'rgba(78, 50, 255, 0.1)',
+    red : '#ee7b6b',
+
 };
 

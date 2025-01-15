@@ -25,6 +25,7 @@ import CustomInput from '../../components/CustomInput';
 import LogoButton from '../../components/LogoButton';
 import BottomSection from '../../components/BottomSection';
 import BackButton from '../../components/BackButton';
+import { API_URL } from '../../constants';
 
 const {width, height} = Dimensions.get('window');
 
@@ -64,10 +65,10 @@ const LoginScreen = () => {
       console.log('email:', userInfo.data.user.email);
       if (userInfo.data.user.email.includes('@kgpian.iitkgp.ac.in')) {
         // Sending the idToken to  backend for verification
-        console.log('api url is : ', process.env.API_URL);
+        console.log('api url is : ', API_URL);
 
         const response = await fetch(
-          "http://192.168.224.183:5000" + '/auth/v2/login/google',
+         API_URL + '/auth/v2/login/google',
           {
             method: 'POST',
             headers: {
@@ -109,9 +110,9 @@ const LoginScreen = () => {
     const {email, password} = data;
     try {
       setLoading(true);
-      console.log("api url is :" , process.env.API_URL)
+      console.log("api url is :" , API_URL)
       const response = await fetch(
-        "http://13.201.246.48:5000" + '/auth/v2/login/password',
+        API_URL + '/auth/v2/login/password',
         {
           method: 'POST',
           headers: {

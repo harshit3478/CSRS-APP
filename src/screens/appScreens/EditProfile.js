@@ -89,7 +89,7 @@ export default function EditProfileScreen({route}) {
           name: selectedImage.path.split('/').pop(), // Extracts the filename from the path
         });
       }
-      console.log("api url is " , process.env.API_URL)
+      // console.log("api url is " , process.env.API_URL)
       const response = await fetch(`${process.env.API_URL}/user/v2/update/profile`, {
         method: 'POST',
         headers: {

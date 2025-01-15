@@ -1,33 +1,184 @@
-import React, { useState } from 'react';
-import {useForm} from 'react-hook-form';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect, Component, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Pressable, StatusBar, Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-import {Avatar} from '../../components/Avatar';
-import CustomButton from '../../components/CustomButton';
-import CustomInput from '../../components/CustomInput';
-import HeaderSection from '../../components/HeaderSection';
-import colors from '../../utils/colors';
-import {useNavigation} from '@react-navigation/native';
+import {
+  StatusBar,
+  Text,
+  View,
+  Platform,
+  PermissionsAndroid,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
+import Contacts from 'react-native-contacts';
 import BackButton from '../../components/BackButton';
+import ContactListTile from '../../components/ContactListTile';
+import colors from '../../utils/colors';
+import HeaderSection from '../../components/HeaderSection';
+import ContactService from '../../utils/ContactService';
+import { useAuth } from '../../context/authenticationContext';
+import { useUser } from '../../context/userContext';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AddContactScreen() {
-  const {control, handleSubmit} = useForm();
+  const [contacts, setContacts] = useState([]);
+  const isInitialRender = useRef(true);
+  const [loading, setLoading] = useState(false);
+  const {user} = useAuth();
+  const {addContact} = useUser();
   const navigation = useNavigation();
-  const [selectedImage, setSelectedImage] = useState(null);
+  const id = user.data.id
+  async function handleAddContact( name, phone) {
+    try {
+      setLoading(true);
+      // show alert to confirm adding contact
+       Alert.alert(
+        'Add Contact',
+        `Do you want to add ${name} to your contacts?`,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => ContactService.addContactAPI(id, name, phone  , addContact , navigation)
+          },
+        ],
+        {cancelable: false},
+      );
+    } catch (error) {
+      console.log('Error adding contact : ', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+  useEffect(() => {
+    if (isInitialRender.current) {
+      async function componentDidMount() {
+        if (Platform.OS === 'android') {
+          PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+            {
+              title: 'Contacts',
+              message: 'This app would like to view your contacts.',
+            },
+          ).then(() => {
+            loadContacts();
+          });
+        } else {
+          this.loadContacts();
+        }
+      }
+      componentDidMount();
+      isInitialRender.current = false;
+    }
+  });
 
-  const handleImageChange = image => {
-    setSelectedImage(image);
-    console.log('Selected Image:', image);
-  };
+  function search(text) {
+    setLoading(true);
+    const phoneNumberRegex =
+      /\b[\+]?[(]?[0-9]{2,6}[)]?[-\s\.]?[-\s\/\.0-9]{3,15}\b/m;
+    const emailAddressRegex =
+      /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    if (text === '' || text === null) {
+      loadContacts();
+    } else if (phoneNumberRegex.test(text)) {
+      Contacts.getContactsByPhoneNumber(text).then(contactlist => {
+        const temp = contactlist
+          .filter(
+            item =>
+              item.displayName &&
+              item.phoneNumbers &&
+              item.phoneNumbers.length > 0,
+          )
+          .map(item => ({
+            name: item.displayName,
+            phone: item.phoneNumbers[0].number,
+            image: item.thumbnailPath,
+          }));
+        setContacts(temp);
+      });
+    } else if (emailAddressRegex.test(text)) {
+      Contacts.getContactsByEmailAddress(text).then(contactlist => {
+        const temp = contactlist
+          .filter(
+            item =>
+              item.displayName &&
+              item.phoneNumbers &&
+              item.phoneNumbers.length > 0,
+          )
+          .map(item => ({
+            name: item.displayName,
+            phone: item.phoneNumbers[0].number,
+            image: item.thumbnailPath,
+          }));
+        setContacts(temp);
+      });
+    } else {
+      Contacts.getContactsMatchingString(text).then(contactlist => {
+        const temp = contactlist
+          .filter(
+            item =>
+              item.displayName &&
+              item.phoneNumbers &&
+              item.phoneNumbers.length > 0,
+          )
+          .map(item => ({
+            name: item.displayName,
+            phone: item.phoneNumbers[0].number,
+            image: item.thumbnailPath,
+          }));
+        setContacts(temp);
+      });
+    }
+    setLoading(false);
+  }
+
+  function loadContacts() {
+    setLoading(true);
+    Contacts.getAll()
+      .then(contactlist => {
+        const temp = contactlist
+          .filter(
+            item =>
+              item.displayName &&
+              item.phoneNumbers &&
+              item.phoneNumbers.length > 0,
+          )
+          .map(item => ({
+            name: item.displayName,
+            phone: item.phoneNumbers[0].number,
+            image: item.thumbnailPath,
+          }));
+        setContacts(temp);
+      })
+      .catch(e => {
+        console.error('Contact error: ', e);
+      })
+      .finally(() => {
+        console.log('Contacts loaded');
+        setLoading(false);
+      });
+
+    Contacts.getCount().then(count => {
+      console.log('Contact count: ', count);
+    });
+
+    Contacts.checkPermission();
+  }
+
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
         <HeaderSection>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
-           <BackButton/>
+            <BackButton />
             <Text
               style={{
                 marginLeft: 10,
@@ -41,55 +192,43 @@ export default function AddContactScreen() {
             </Text>
           </View>
         </HeaderSection>
+
         <View style={{padding: 10}}>
-            <View className="w-[140] h-[140] rounded-full bg-white mx-auto my-5 justify-center items-center " style={{elevation: 10}}>
-          <Avatar
-            source={
-              selectedImage
-                ? {uri: selectedImage.path}
-                : require('../../../assets/profile.png')
-            } 
-            onChange={handleImageChange}
-          />
-            </View>
-          <CustomInput
-            control={control}
-            name={'name'}
-            placeholder={'Name'}
-            rules={{
-              required: true,
+          {/* <SearchBar searchPlaceholder="Search" onChangeText={search} /> */}
+          <TextInput
+            style={{
+              borderWidth: 1,
+              borderColor: colors.secondary,
+              borderRadius: 25,
+              paddingHorizontal: 15,
+              height: 40,
+              marginBottom: 10,
+              color: colors.darkText,
             }}
+            placeholder="Search..."
+            onChangeText={search}
+            placeholderTextColor={colors.lightText}
           />
-          <CustomInput
-            control={control}
-            name={'phone'}
-            placeholder={'Phone'}
-            rules={{required: true, pattern: /^[0-9]/}}
-          />
-          <CustomInput
-            control={control}
-            name={'email'}
-            placeholder={'Email'}
-            rules={{
-              required: true,
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            }}
-          />
-          <View className="flex-row w-full  justify-around">
-            <View className="flex-1 pr-5">
-              <CustomButton
-                onPress={() => navigation.goBack()}
-                title="Cancel"
-                type="OUTLINED"
-              />
-            </View>
-            <View className="flex-1 ">
-              <CustomButton
-                onPress={handleSubmit(data => console.log(data))}
-                title="Save"
-              />
-            </View>
-          </View>
+          {loading ? (
+            <ActivityIndicator size="large" color={colors.primary} />
+          ) : (
+            <FlatList
+              data={contacts}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    handleAddContact(item.name, item.phone)
+                  }>
+                  <ContactListTile
+                    name={item.name}
+                    phone={item.phone}
+                    image={item.image}
+                  />
+                </TouchableOpacity>
+              )}
+            />
+          )}
         </View>
       </SafeAreaView>
     </>

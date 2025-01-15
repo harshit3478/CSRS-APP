@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+// import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabNavigator from './TabNavigator';
 import SOSScreen from '../screens/appScreens/SOSScreen';
 import AddContactScreen from '../screens/appScreens/AddContactScreen';
 import EditProfileScreen from '../screens/appScreens/EditProfile';
+import MyDrawer from './DrawerNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,8 +14,9 @@ const AppStack = () => {
   return (
     <>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        <Stack.Screen name="AddContact" component={AddContactScreen}/>  
+        {/* <Stack.Screen name="TabNavigator" component={TabNavigator} /> */}
+        <Stack.Screen name="DrawerNavigator" component={MyDrawer} />
+        <Stack.Screen name="AddContact" component={AddContactScreen} />  
         <Stack.Screen name="SOSScreen" component={SOSScreen}/>
         <Stack.Screen name="EditProfile" component={EditProfileScreen}/>
       </Stack.Navigator>

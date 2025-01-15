@@ -1,0 +1,10 @@
+// export const API_URL = "http://10.145.12.250:5000"
+export const API_URL = "https://datsolcsrs.live"
+export const GOOGLE_WEB_CLIENT_ID = "1075866666288-i4agq2u6oe9j05ca3rmrrfvbig2ksp5s.apps.googleusercontent.com"
+// API_URL = http://localhost:5000
+// API_URL = http://192.168.224.183:5000
+// GOOGLE_ANDROID_CLIENT_ID = 1075866666288-u9pec47fc2to03a1cdbq0ld14rhalg6e.apps.googleusercontent.com
+
+// GOOGLE_ANDROID_CLIENT_ID = 1075866666288-47dln2p5d0ntrp7bu75d4g49nbasjomf.apps.googleusercontent.com
+
+
